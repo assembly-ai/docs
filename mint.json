@@ -1,15 +1,15 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Assembly",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#7695ff",
+    "light": "#7695ff",
+    "dark": "#7695ff",
     "anchors": {
       "from": "#0D9373",
       "to": "#07C983"
@@ -18,34 +18,7 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
-  },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "mailto:support@askassembly.app"
     }
   ],
   "navigation": [
@@ -60,9 +33,16 @@
     {
       "group": "Using Assembly",
       "pages": [
-        "usage/support",
+        {
+          "group": "Support",
+          "pages": ["usage/support/issues","usage/support/slas", "usage/support/statuses", "usage/support/businesshours", "usage/support/alert"]
+        },
+        {
+          "group": "Customer Success",
+          "pages": ["usage/customerSuccess/productInsights", "usage/customerSuccess/announcements", "usage/customerSuccess/companies"]
+        },
+        
          "usage/analytics",
-         "usage/customer_success",
           "usage/teams"
       ]
     }
