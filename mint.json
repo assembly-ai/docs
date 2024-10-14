@@ -34,9 +34,22 @@
       "group": "Using Assembly",
       "pages": [
         {
-          "group": "Support",
-          "pages": ["usage/support/issues","usage/support/slas", "usage/support/statuses", "usage/support/businesshours", "usage/support/alert"]
+          "group": "Support Ticketing",
+          "pages": ["usage/support ticketing/issues","usage/support ticketing/statuses", "usage/support ticketing/slas", "usage/support ticketing/businesshours", "usage/support/alert"]
         },
+        {
+          "group": "Platform",
+          "pages": ["usage/platform/Teams",
+          
+          {
+            "group": "Basics",
+            "pages": ["Team Setup", "General Team", "Adding Teams"]
+        }, 
+        "usage/support ticketing/statuses", "usage/support ticketing/slas", "usage/support ticketing/businesshours", "usage/support/alert"
+          ]
+
+
+        }, 
         {
           "group": "Customer Success",
           "pages": ["usage/customerSuccess/productInsights", "usage/customerSuccess/announcements", "usage/customerSuccess/companies"]
