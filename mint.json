@@ -50,38 +50,23 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Getting Started",
       "pages": [
         "introduction",
         "quickstart",
-        "development"
+        "platform"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Using Assembly",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "usage/support",
+         "usage/analytics",
+         "usage/customer_success",
+          "usage/teams"
       ]
     }
+    
   ],
   "footerSocials": {
     "x": "https://x.com/mintlify",
