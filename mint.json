@@ -27,8 +27,7 @@
       "group": "Getting Started",
       "pages": [
         "introduction",
-        "quickstart",
-        "platform"
+        "quickstart"
       ]
     },
     {
@@ -42,7 +41,6 @@
           "group": "Platform",
           "pages": ["usage/platform/teams", "usage/platform/labels", "usage/platform/workflows&rules", "usage/platform/search"]
 
-
         }, 
         {
           "group": "Customer Success",
@@ -55,8 +53,6 @@
     
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://linkedin.com/company/mintlify"
+    "linkedin": "https://www.linkedin.com/company/askassemblyapp"
   }
 }
