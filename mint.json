@@ -39,7 +39,7 @@
         },
         {
           "group": "Platform",
-          "pages": ["usage/platform/teams", ""]
+          "pages": ["usage/platform/teams", "usage/platform/labels", "usage/platform/workflows&rules", "usage/platform/search"]
 
 
         }, 
