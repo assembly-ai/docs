@@ -4,8 +4,17 @@
   "logo": {
     "dark": "/logo/White logo - no background.svg",
     "light": "logo/Black logo - no background.svg"
+
+    
     
   },
+  "modeToggle": {
+    "default": "light",
+    "isHidden": true
+  }
+  
+  , 
+
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#7695ff",
@@ -35,7 +44,7 @@
       "pages": [
         {
           "group": "Support Ticketing",
-          "pages": ["usage/support/issues","usage/support/statuses", "usage/support/slas", "usage/support/businesshours", "usage/support/alert"]
+          "pages": ["usage/support/issues","usage/support/statuses", "usage/support/slas", "usage/support/alert", "usage/support/businesshours"]
         },
         {
           "group": "Platform",
