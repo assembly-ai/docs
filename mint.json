@@ -35,18 +35,11 @@
       "pages": [
         {
           "group": "Support Ticketing",
-          "pages": ["usage/support ticketing/issues","usage/support ticketing/statuses", "usage/support ticketing/slas", "usage/support ticketing/businesshours", "usage/support/alert"]
+          "pages": ["usage/support/issues","usage/support/statuses", "usage/support/slas", "usage/support/businesshours", "usage/support/alert"]
         },
         {
           "group": "Platform",
-          "pages": ["usage/platform/Teams",
-          
-          {
-            "group": "Basics",
-            "pages": ["Team Setup", "General Team", "Adding Teams"]
-        }, 
-        "usage/support ticketing/statuses", "usage/support ticketing/slas", "usage/support ticketing/businesshours", "usage/support/alert"
-          ]
+          "pages": ["usage/platform/teams", ""]
 
 
         }, 
