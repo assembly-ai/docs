@@ -49,8 +49,7 @@
           "pages": ["usage/customerSuccess/productInsights", "usage/customerSuccess/announcements", "usage/customerSuccess/companies"]
         },
         
-         "usage/analytics",
-          "usage/teams"
+         "usage/analytics"
       ]
     }
     
