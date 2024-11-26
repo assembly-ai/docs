@@ -40,9 +40,8 @@ The files field is used to send images to Assembly. You can currently send JPG a
 
 Here are some of the errors that may be returned:
 
-- 400: Invalid request - missing title, file too large
+- 400: Invalid request - missing title, file too large, couldn't be opened, etc.
 - 401: Invalid API Key or expired API Key
-- 502: Couldn't open the image file
 - 503: Assembly server error has been logged and our team has been notified
 
 Errors take on the following format in JSON:
@@ -56,3 +55,9 @@ Successful responses take on the following format in JSON:
 ```json
 {"created_ticket_number": "AAA-111"}
 ```
+
+#### Rate Limiting
+
+There is a rate limit of 30 events per second. If you exceed this, you will receive a 429 response code.
+
+If you need a higher rate, please let us know.
