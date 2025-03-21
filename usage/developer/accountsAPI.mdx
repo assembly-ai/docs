@@ -1,0 +1,287 @@
+---
+title: 'Developer - Accounts'
+description: 'Send events from your own integrations to Assembly. This is a great way to track and update your accounts.
+'
+---
+### Developer
+
+You can send events to update and maintain your accounts from your own integrations to Assembly. 
+
+#### Accounts
+
+Maintain your accounts through these API endpoints. Accounts types include: Company or Customer.
+
+##### Create Account 
+Required attributes are `type`, `name`, and `domain`. The domain for a Company Account should be a domain i.e. `company.com` while the domain for a Customer Account should be an email i.e. `name@company.com`.
+There are various optional attributes that you can add to define the account. Here are the possible attributes. 
+Note that `company_type` and `preferred_communication` can only be specified for Company Accounts. While `company_id` can only be specified for Customer Accounts.
+You can also add source specific IDs that will then act as another id for you to reference the account with in lieu of using our Assembly ID for the account.
+```bash
+curl -X \
+ POST https://chat-widget-7vb6.onrender.com/accounts \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+	"type": "Company",
+	"name": "account_name",
+	"domain": "account.com",
+    "source_specific_ids": ["sourceSpecificID"], // Optional
+    "image_url: "https://cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", // Optional
+    "phone": ["123456789"], // Optional
+    "contract_value": 100, // Optional
+    "contract_type": "month", // Optional - either "month" or "year"
+    "renewal_date": "2027-12-31", // Optional
+    "trial_expiration_date": "2025-07-31", // Optional
+    "assignee": , // Optional // TODO: utilize email?? Or also need CRUD for assignee? 
+    "tier": "8780fd65-3b8d-4c06-891b-636acda3a71c", // Optional - ID of the tier label 
+    "stage": "c738534b-62d6-4f0a-aee1-3a5c6d860d86", // Optional - ID of the stage label
+    "tags": ["0195a666-3405-7664-aaf1-ad65b6091e96", "0195af0e-3213-78fc-a3cf-cb8c192abeaf"], // Optional - List of account tag labels to include
+    "notes": "A note about the account", // Optional
+    "id_in_tool": "idA", // Optional - the ID of the company/user in your own tool for reference
+    "additional_properties": { // Optional - a key-value mapping of custom attributes specific to the account
+        "Login_count": 2,
+        "Timezone": "America/Los_Angeles"
+    }
+    // Only supported for company accounts
+    "company_type": "0195a67e-1ac2-748f-9f8e-709449c2e68a", // Optional - ID of the company type label
+    "number_of_seat": 20, // Optional
+    // Only supported for customer accounts
+    "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49", // Optional - Assembly ID of the company account to attach the customer to
+ }'
+```
+
+##### Get Accounts
+You can grab all the accounts for your organization by calling `accounts`. 
+To grab a specific account, you can use the ID from Assembly, the domain of the account, or a source specific ID that you've already linked to the account.
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/account.com \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/sourceSpecificID \
+ -H "Authorization: <API_KEY>"
+```
+
+##### Update Account
+Update any of the account fields except the `additional_properties` with this method. 
+You can update an account via the Assembly ID, the domain of the account, or with a source specific ID that you've already linked to the account.
+In the input arguments, include any of the fields that you want to update. All the allowed parameters are the same as the `CREATE` endpoint except for tags and source specific IDs. 
+Instead of a general tags list the arguments are `added_tags` and `removed_tags`. Similarily, instead of a general source specific IDs list, the arguments are 'added_source_specific_ids' and 'removed_source_specific_ids'.
+```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "name": "New Account Name",
+    "added_tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
+    "removed_tags": ["0195a666-3405-7664-aaf1-ad65b6091e96"],
+    "added_source_specific_ids": ["newSourceSpecificID"],
+    "removed_source_specific_ids": ["sourceSpecificID]
+ }'
+```
+
+##### Delete Account
+Delete an account by referencing the account with its Assembly ID, domain, or source specific ID.
+```bash
+curl -X \
+ DELETE https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Authorization: <API_KEY>"
+```
+
+#### Account's Additional Properties
+
+The custom attributes of an account that's stored on a per account basis. Therefore, all of these endpoints affect a specific account's additional properties.
+
+##### Create Additional Properties
+To denote which account to create the property on, you have to either specify an `id`, `source_specific_id`, or `domain` in the parameters. You must also include the `property_name` and the `property_value`.
+If the `property_name` already exist on that account's additional properties, an "already exists" error will be returned.
+```bash
+curl -X \
+ POST https://chat-widget-7vb6.onrender.com/accounts/add_props \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+	"id": "01945162-52fc-739b-98de-e2ac9f2eec49",
+    "property_name": "Custom Property",
+    "property_value": "Value"
+ }'
+```
+
+##### Get Additional Properties
+Specify either the Assembly ID, domain, or source specific ID of the account to get the additional properties of the account.
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/add_props/account.com \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/add_props/sourceSpecificID \
+ -H "Authorization: <API_KEY>"
+```
+
+##### Update Additional Properties
+Update an account's aditional properties by specifying the account's Assembly ID, domain, or source specific ID. Include any of the fields that we want to update with a mapping to their new values.
+If the specified field does not already exist in the account's additional properties, we will directly add it.
+```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "Custom Property": "New Value",
+    "New Property 1": 7
+    "New Property 2": ["value1", "value2"]
+ }'
+```
+
+##### Delete Additional Property
+Similarly, reference an account with its Assembly ID, domain, or source specific ID and then specify which properties to delete by the property names.
+```bash
+curl -X DELETE \
+  https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+  -H "Authorization: <API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "properties_to_delete": ["Property1", "Property2", "Property3"]
+  }'
+```
+
+#### Account Labels
+
+Here are the API endpoints for account labels. Account label types include: tier, stage, company_type, or tag.
+
+##### Create Account Label
+Required attributes are the `type`, `name`, and `color` of the label. Optionally, include a description.
+```bash
+curl -X \
+ POST https://chat-widget-7vb6.onrender.com/accounts/labels \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "type": "Tier"
+    "name": "Example Tier"
+    "color": "#EFBFDD", // hex code
+    "description": "A description about example tier", // optional
+ }'
+```
+
+##### Get Account Labels
+There are three versions of grabbing account labels. You can grab all the account labels for your organization by calling `/account_labels`.
+To grab a specific type of account labels, add the label type so `/account_labels/{type}`. And then to grab a specific label, add the label ID so `account_labels/{label_id}`.
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/labels \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/labels/tier \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ -H "Authorization: <API_KEY>"
+```
+
+##### Update Account Label
+To update an account label, you must have the label id and call `account_labels/{label_id}`. Use the get account labels endpoints to grab the label id if needed.
+Include the fields that you are changing for the label in the json object. The possible arguments are `type`, `name`, `color`, and `description`.
+```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "name": "New Example Tier"
+ }'
+```
+
+##### Delete Account Label
+You also must have the label_id to delete an account label. Then just call `account_labels/{label_id}` with a delete operation.
+```bash
+curl -X \
+ DELETE https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ -H "Authorization: <API_KEY>"
+```
+
+#### Usage
+
+Here are the API endpoints for sending usage logs to be stored under a specific account.
+
+##### Add Usage Log
+To denote which account to add the usage log to, you must include either the Assembly `id`, the `domain` of the account, or a `source_specific_id` that's already been linked to an account.
+Otherwise the required attributes are `timestamp` of when the event happened, the `type` of event i.e. "Action" or "Message", and some `content` about the event.
+Additionally, you can add an `attribute` that the log should be tied to and any metadata. We'll use the attribute to group logs into categories that can accordingly be used for calculating account health score.
+```bash
+curl -X \
+ POST https://chat-widget-7vb6.onrender.com/accounts/usage \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "id": "01945162-52fc-739b-98de-e2ac9f2eec49"
+    "timestamp": "2025-03-20T15:30:00Z"
+    "type": "Action",
+    "content": "User logged in",
+    "attribute": "Login", // Optional
+    "metadata": {} // Optional
+ }'
+```
+
+##### Get Usage Logs
+You can either grab all the usage logs for your organization or specify a specific account through one of the three account identifying methods.
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/usage \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/accounts/usage/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Authorization: <API_KEY>"
+```
+
+##### Update Usage Log
+Update any values in a usage log by its ID. Include the values that you want to update in the input data. Note, that updating the metadata field will completely override the existing metadata value.
+```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "attribute": "Seats"
+ }'
+```
+
+##### Delete Usage Log
+Delete a usage log by its specific ID which is returned when a usage log is created.
+```bash
+curl -X \
+ DELETE https://chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
+ -H "Authorization: <API_KEY>"
+```
+
+#### Rate Limiting
+
+There is a rate limit of 30 events per second. If you exceed this, you will receive a 429 response code.
+
+If you need a higher rate, please let us know.
