@@ -25,7 +25,7 @@ curl -X \
 	"name": "account_name",
 	"domain": "account.com",
     "source_specific_ids": ["sourceSpecificID"], # Optional
-    "image_url: "https:#cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", # Optional
+    "image_url: "https://cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", # Optional
     "phone": ["123456789"], # Optional
     "contract_value": 100, # Optional
     "contract_type": "month", # Optional - either "month" or "year"
@@ -171,7 +171,7 @@ curl -X DELETE \
 Here are the API endpoints for account labels. Account label types include: tier, stage, company_type, or tag.
 
 #### Create Account Label
-Required attributes are the `type`, `name`, and `color` of the label. Optionally, include a description.
+Required attributes are the `type`, `name`, and `color` of the label. Optionally, include a description. The `id` of the created label will be returned.
 ```bash
 curl -X \
  POST https://chat-widget-7vb6.onrender.com/accounts/labels \
@@ -186,8 +186,8 @@ curl -X \
 ```
 
 #### Get Labels
-There are three versions of grabbing account labels. You can grab all the account labels for your organization by calling `/account_labels`.
-To grab a specific type of account labels, add the label type so `/account_labels/{type}`. And then to grab a specific label, add the label ID so `account_labels/{label_id}`.
+There are three versions of grabbing account labels. You can grab all the account labels for your organization by calling `/account/labels`.
+To grab a specific type of account labels, add the label type so `/account/labels/{type}`. And then to grab a specific label, add the label ID so `/account/labels/{label_id}`.
 ```bash
 curl -X \
  GET https://chat-widget-7vb6.onrender.com/accounts/labels \
@@ -205,7 +205,7 @@ curl -X \
 ```
 
 #### Update Label
-To update an account label, you must have the label id and call `account_labels/{label_id}`. Use the get account labels endpoints to grab the label id if needed.
+To update an account label, you must have the label id and call `/account/labels/{label_id}`. Use the get account labels endpoints to grab the label id if needed.
 Include the fields that you are changing for the label in the json object. The possible arguments are `type`, `name`, `color`, and `description`.
 ```bash
 curl -X \
@@ -218,7 +218,7 @@ curl -X \
 ```
 
 #### Delete Label
-You also must have the label_id to delete an account label. Then just call `account_labels/{label_id}` with a delete operation.
+You also must have the label_id to delete an account label. Then just call `/account/labels/{label_id}` with a delete operation.
 ```bash
 curl -X \
  DELETE https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
