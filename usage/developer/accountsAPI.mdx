@@ -3,7 +3,7 @@ title: 'Developer - Accounts'
 description: 'Send events from your own integrations to Assembly. This is a great way to track and update your accounts.
 '
 ---
-### Accounts
+## Accounts
 
 Maintain your accounts through these API endpoints. Accounts types include: Company or Customer.
 
@@ -11,7 +11,7 @@ Maintain your accounts through these API endpoints. Accounts types include: Comp
 Required attributes are `type`, `name`, and `domain`. The domain for a Company Account should be a domain i.e. `company.com` while the domain for a Customer Account should be an email i.e. `name@company.com`.
 There are various optional attributes that you can add to define the account. The possible attributes are shown in the example below. You can also add source specific IDs that will then act as another id for you to reference the account with in lieu of using our Assembly ID for the account.
 
-Note there are attributes specific to Company accounts versus Customer Accounts:
+Note there are attributes specific to Company versus Customer Accounts:
 - Company Specific Attributes: `company_type` and `number_of_seats`
 - Customer Specific Attributes: `company_id`
 
@@ -101,11 +101,11 @@ curl -X \
 ```
 
 
-### Account's Additional Properties
+## Additional Properties
 
 The custom attributes of an account that's stored on a per account basis. Therefore, all of these endpoints affect a specific account's additional properties.
 
-##### Create Additional Properties
+#### Create Additional Properties
 To denote which account to create the property on, you have to either specify an `id`, `source_specific_id`, or `domain` in the parameters. You must also include the `property_name` and the `property_value`.
 If the `property_name` already exist on that account's additional properties, an "already exists" error will be returned.
 ```bash
@@ -166,7 +166,7 @@ curl -X DELETE \
 ```
 
 
-### Account Labels
+## Labels
 
 Here are the API endpoints for account labels. Account label types include: tier, stage, company_type, or tag.
 
@@ -185,7 +185,7 @@ curl -X \
  }'
 ```
 
-#### Get Account Labels
+#### Get Labels
 There are three versions of grabbing account labels. You can grab all the account labels for your organization by calling `/account_labels`.
 To grab a specific type of account labels, add the label type so `/account_labels/{type}`. And then to grab a specific label, add the label ID so `account_labels/{label_id}`.
 ```bash
@@ -204,7 +204,7 @@ curl -X \
  -H "Authorization: <API_KEY>"
 ```
 
-#### Update Account Label
+#### Update Label
 To update an account label, you must have the label id and call `account_labels/{label_id}`. Use the get account labels endpoints to grab the label id if needed.
 Include the fields that you are changing for the label in the json object. The possible arguments are `type`, `name`, `color`, and `description`.
 ```bash
@@ -217,7 +217,7 @@ curl -X \
  }'
 ```
 
-#### Delete Account Label
+#### Delete Label
 You also must have the label_id to delete an account label. Then just call `account_labels/{label_id}` with a delete operation.
 ```bash
 curl -X \
@@ -226,7 +226,7 @@ curl -X \
 ```
 
 
-### Usage
+## Usage
 
 Here are the API endpoints for sending usage logs to be stored under a specific account.
 
@@ -283,7 +283,7 @@ curl -X \
  -H "Authorization: <API_KEY>"
 ```
 
-### Rate Limiting
+## Rate Limiting
 
 There is a rate limit of 30 events per second. If you exceed this, you will receive a 429 response code.
 
