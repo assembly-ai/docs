@@ -17,7 +17,7 @@ Note there are attributes specific to Company versus Customer Accounts:
 
 ```bash
 curl -X \
- POST https:#chat-widget-7vb6.onrender.com/accounts \
+ POST https://chat-widget-7vb6.onrender.com/accounts \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -53,22 +53,22 @@ You can grab all the accounts for your organization by calling `accounts`.
 To grab a specific account, you can use the ID from Assembly, the domain of the account, or a source specific ID that you've already linked to the account.
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts \
+ GET https://chat-widget-7vb6.onrender.com/accounts \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/account.com \
+ GET https://chat-widget-7vb6.onrender.com/accounts/account.com \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/sourceSpecificID \
+ GET https://chat-widget-7vb6.onrender.com/accounts/sourceSpecificID \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -80,7 +80,7 @@ All the allowed parameters are the same as the `CREATE` endpoint except for tags
 Instead of a general tags list the arguments are `added_tags` and `removed_tags`. Similarily, instead of a general source specific IDs list, the arguments are 'added_source_specific_ids' and 'removed_source_specific_ids'.
 ```bash
 curl -X \
- PUT https:#chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -96,7 +96,7 @@ curl -X \
 Delete an account by referencing the account with its Assembly ID, domain, or source specific ID.
 ```bash
 curl -X \
- DELETE https:#chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ DELETE https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -110,7 +110,7 @@ To denote which account to create the property on, you have to either specify an
 If the `property_name` already exist on that account's additional properties, an "already exists" error will be returned.
 ```bash
 curl -X \
- POST https:#chat-widget-7vb6.onrender.com/accounts/add_props \
+ POST https://chat-widget-7vb6.onrender.com/accounts/add_props \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -124,17 +124,17 @@ curl -X \
 Specify either the Assembly ID, domain, or source specific ID of the account to get the additional properties of the account.
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/add_props/account.com \
+ GET https://chat-widget-7vb6.onrender.com/accounts/add_props/account.com \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/add_props/sourceSpecificID \
+ GET https://chat-widget-7vb6.onrender.com/accounts/add_props/sourceSpecificID \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -143,7 +143,7 @@ Update an account's aditional properties by specifying the account's Assembly ID
 If the specified field does not already exist in the account's additional properties, we will directly add it.
 ```bash
 curl -X \
- PUT https:#chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -157,7 +157,7 @@ curl -X \
 Similarly, reference an account with its Assembly ID, domain, or source specific ID and then specify which properties to delete by the property names.
 ```bash
 curl -X DELETE \
-  https:#chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+  https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
   -H "Authorization: <API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -174,7 +174,7 @@ Here are the API endpoints for account labels. Account label types include: tier
 Required attributes are the `type`, `name`, and `color` of the label. Optionally, include a description.
 ```bash
 curl -X \
- POST https:#chat-widget-7vb6.onrender.com/accounts/labels \
+ POST https://chat-widget-7vb6.onrender.com/accounts/labels \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -190,17 +190,17 @@ There are three versions of grabbing account labels. You can grab all the accoun
 To grab a specific type of account labels, add the label type so `/account_labels/{type}`. And then to grab a specific label, add the label ID so `account_labels/{label_id}`.
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/labels \
+ GET https://chat-widget-7vb6.onrender.com/accounts/labels \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/labels/tier \
+ GET https://chat-widget-7vb6.onrender.com/accounts/labels/tier \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ GET https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -209,7 +209,7 @@ To update an account label, you must have the label id and call `account_labels/
 Include the fields that you are changing for the label in the json object. The possible arguments are `type`, `name`, `color`, and `description`.
 ```bash
 curl -X \
- PUT https:#chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -221,7 +221,7 @@ curl -X \
 You also must have the label_id to delete an account label. Then just call `account_labels/{label_id}` with a delete operation.
 ```bash
 curl -X \
- DELETE https:#chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ DELETE https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -237,7 +237,7 @@ Otherwise the required attributes are `timestamp` of when the event happened, th
 Additionally, you can add an `attribute` that the log should be tied to and any metadata. We'll use the attribute to group logs into categories that can accordingly be used for calculating account health score.
 ```bash
 curl -X \
- POST https:#chat-widget-7vb6.onrender.com/accounts/usage \
+ POST https://chat-widget-7vb6.onrender.com/accounts/usage \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -254,12 +254,12 @@ curl -X \
 You can either grab all the usage logs for your organization or specify a specific account through one of the three account identifying methods.
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/usage \
+ GET https://chat-widget-7vb6.onrender.com/accounts/usage \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https:#chat-widget-7vb6.onrender.com/accounts/usage/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET https://chat-widget-7vb6.onrender.com/accounts/usage/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -267,7 +267,7 @@ curl -X \
 Update any values in a usage log by its ID. Include the values that you want to update in the input data. Note, that updating the metadata field will completely override the existing metadata value.
 ```bash
 curl -X \
- PUT https:#chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -279,7 +279,7 @@ curl -X \
 Delete a usage log by its specific ID which is returned when a usage log is created.
 ```bash
 curl -X \
- DELETE https:#chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
+ DELETE https://chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
  -H "Authorization: <API_KEY>"
 ```
 
