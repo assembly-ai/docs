@@ -15,6 +15,7 @@ Note there are attributes specific to Company versus Customer Accounts:
 - Company Specific Attributes: `company_type` and `number_of_seats`
 - Customer Specific Attributes: `company_id`
 
+The Assembly ID of the created account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`
 ```bash
 curl -X \
  POST https://chat-widget-7vb6.onrender.com/accounts \
@@ -25,10 +26,10 @@ curl -X \
 	"name": "account_name",
 	"domain": "account.com",
     "source_specific_ids": ["sourceSpecificID"], # Optional
-    "image_url: "https://cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", # Optional
+    "image_url": "https://cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", # Optional
     "phone": ["123456789"], # Optional
     "contract_value": 100, # Optional
-    "contract_type": "month", # Optional - either "month" or "year"
+    "contract_type": "Month", # Optional - either "Month" or "Year"
     "renewal_date": "2027-12-31", # Optional
     "trial_expiration_date": "2025-07-31", # Optional
     "tier": "8780fd65-3b8d-4c06-891b-636acda3a71c", # Optional - ID of the tier label 
@@ -39,7 +40,7 @@ curl -X \
     "additional_properties": { # Optional - a key-value mapping of custom attributes specific to the account
         "Login_count": 2,
         "Timezone": "America/Los_Angeles"
-    }
+    },
     # Only supported for company accounts
     "company_type": "0195a67e-1ac2-748f-9f8e-709449c2e68a", # Optional - ID of the company type label
     "number_of_seats": 20, # Optional
@@ -49,13 +50,16 @@ curl -X \
 ```
 
 #### Get Accounts
-You can grab all the accounts for your organization by calling `accounts`. 
-To grab a specific account, you can use the ID from Assembly, the domain of the account, or a source specific ID that you've already linked to the account.
+You can grab all the accounts for your organization by calling `accounts`. This call is paginated, so please include the limit and offset in your URL otherwise the default `limit=100` and `offset=0` will be used.
+The return type is `{"accounts": {"data": [...], "has_next_page": ..., "next_cursor": ...}}`.
+Note: the accounts are sorted by type so all Company Accounts will show up before Customer Accounts. Within each account type section, the accounts are sorted alphabetically by account name.
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts \
+ GET "https://chat-widget-7vb6.onrender.com/accounts?limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
+To grab a specific account, you can use the ID from Assembly, the domain of the account, or a source specific ID that you've already linked to the account. This call is not paginated since you are only grabbing a specific account.
+The account is returned in this format `{"account":{...}}`
 ```bash
 curl -X \
  GET https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
@@ -78,6 +82,8 @@ In the input arguments, include any of the fields that you want to update.
 
 All the allowed parameters are the same as the `CREATE` endpoint except for tags and source specific IDs. 
 Instead of a general tags list the arguments are `added_tags` and `removed_tags`. Similarily, instead of a general source specific IDs list, the arguments are 'added_source_specific_ids' and 'removed_source_specific_ids'.
+
+The Assembly ID of the updated account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
 ```bash
 curl -X \
  PUT https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
@@ -88,12 +94,12 @@ curl -X \
     "added_tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
     "removed_tags": ["0195a666-3405-7664-aaf1-ad65b6091e96"],
     "added_source_specific_ids": ["newSourceSpecificID"],
-    "removed_source_specific_ids": ["sourceSpecificID]
+    "removed_source_specific_ids": ["sourceSpecificID"]
  }'
 ```
 
 #### Delete Account
-Delete an account by referencing the account with its Assembly ID, domain, or source specific ID.
+Delete an account by referencing the account with its Assembly ID, domain, or source specific ID. The return is empty `{}`.
 ```bash
 curl -X \
  DELETE https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
@@ -106,22 +112,22 @@ curl -X \
 The custom attributes of an account that's stored on a per account basis. Therefore, all of these endpoints affect a specific account's additional properties.
 
 #### Create Additional Properties
-To denote which account to create the property on, you have to either specify an `id`, `source_specific_id`, or `domain` in the parameters. You must also include the `property_name` and the `property_value`.
-If the `property_name` already exist on that account's additional properties, an "already exists" error will be returned.
+To denote which account to create the property on, you have to append the url with either the account's Assembly ID, source specific id, or domain.
+Then include a map of the properties you want to add to the value of each property. If the property already exists on that account's additional properties, an "already exists" error will be returned. Otherwise, the Assembly ID of the account that the property was created for is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/accounts/add_props \
+ POST https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
-	"id": "01945162-52fc-739b-98de-e2ac9f2eec49",
-    "property_name": "Custom Property",
-    "property_value": "Value"
+    "property1": "value1",
+    "property2": "value2"
  }'
 ```
 
 #### Get Additional Properties
 Specify either the Assembly ID, domain, or source specific ID of the account to get the additional properties of the account.
+The return includes the ID of the account and the account's additional properties in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49", "additional_properties": {...}}`
 ```bash
 curl -X \
  GET https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
@@ -140,7 +146,7 @@ curl -X \
 
 #### Update Additional Properties
 Update an account's aditional properties by specifying the account's Assembly ID, domain, or source specific ID. Include any of the fields that we want to update with a mapping to their new values.
-If the specified field does not already exist in the account's additional properties, we will directly add it.
+If the specified field does not already exist in the account's additional properties, we will directly add it. The ID of the account whose additional properties were updated is returned in the format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`
 ```bash
 curl -X \
  PUT https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
@@ -148,46 +154,47 @@ curl -X \
  -H "Authorization: <API_KEY>" \
  -d '{
     "Custom Property": "New Value",
-    "New Property 1": 7
+    "New Property 1": 7,
     "New Property 2": ["value1", "value2"]
  }'
 ```
 
 #### Delete Additional Property
-Similarly, reference an account with its Assembly ID, domain, or source specific ID and then specify which properties to delete by the property names.
+Similarly, reference an account with its Assembly ID, domain, or source specific ID and then specify which properties to delete by the property names. The return is empty `{}`.
 ```bash
 curl -X DELETE \
-  https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+  https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
   -H "Authorization: <API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
-    "properties_to_delete": ["Property1", "Property2", "Property3"]
+    "properties": ["Property1", "Property2", "Property3"]
   }'
 ```
 
 
 ## Labels
 
-Here are the API endpoints for account labels. Account label types include: tier, stage, company_type, or tag.
+Here are the API endpoints for account labels. Account label types include: `Tier`, `Stage`, `CompanyType`, or `AccountTag` (Tags).
 
-#### Create Account Label
-Required attributes are the `type`, `name`, and `color` of the label. Optionally, include a description. The `id` of the created label will be returned.
+#### Create Label
+Required attributes are the `type`, `name`, and `color` of the label. Optionally, include a description. The ID of the created label will be returned in this format `{"id": "0195a666-3405-7664-aaf1-ad65b6091e96"}`.
 ```bash
 curl -X \
  POST https://chat-widget-7vb6.onrender.com/accounts/labels \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
-    "type": "Tier"
-    "name": "Example Tier"
-    "color": "#EFBFDD", # hex code
-    "description": "A description about example tier", # optional
+    "type": "Tier",
+    "name": "Example Tier",
+    "color": "#545A92", # hex code
+    "description": "A description about example tier" # optional
  }'
 ```
 
 #### Get Labels
 There are three versions of grabbing account labels. You can grab all the account labels for your organization by calling `/account/labels`.
 To grab a specific type of account labels, add the label type so `/account/labels/{type}`. And then to grab a specific label, add the label ID so `/account/labels/{label_id}`.
+The labels are returned in this format `{"labels": [...]}`.
 ```bash
 curl -X \
  GET https://chat-widget-7vb6.onrender.com/accounts/labels \
@@ -206,7 +213,7 @@ curl -X \
 
 #### Update Label
 To update an account label, you must have the label id and call `/account/labels/{label_id}`. Use the get account labels endpoints to grab the label id if needed.
-Include the fields that you are changing for the label in the json object. The possible arguments are `type`, `name`, `color`, and `description`.
+Include the fields that you are changing for the label in the json object. The possible arguments are `type`, `name`, `color`, and `description`. The ID of the updated label is returned as `{"id": "0195a666-3405-7664-aaf1-ad65b6091e96"}`
 ```bash
 curl -X \
  PUT https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
@@ -218,7 +225,7 @@ curl -X \
 ```
 
 #### Delete Label
-You also must have the label_id to delete an account label. Then just call `/account/labels/{label_id}` with a delete operation.
+You also must have the label_id to delete an account label. Then just call `/account/labels/{label_id}` with a delete operation. The return is empty `{}`.
 ```bash
 curl -X \
  DELETE https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
@@ -231,43 +238,60 @@ curl -X \
 Here are the API endpoints for sending usage logs to be stored under a specific account.
 
 #### Add Usage Log
-To denote which account to add the usage log to, you must include either the Assembly `id`, the `domain` of the account, or a `source_specific_id` that's already been linked to an account.
-
-Otherwise the required attributes are `timestamp` of when the event happened, the `type` of event i.e. "Action" or "Message", and some `content` about the event.
+The required attributes are `timestamp` of when the event happened, the `type` of event i.e. "Action" or "Message", and some `content` about the event.
 Additionally, you can add an `attribute` that the log should be tied to and any metadata. We'll use the attribute to group logs into categories that can accordingly be used for calculating account health score.
+The ID of the created log is returned in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`.
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/accounts/usage \
+ POST https://chat-widget-7vb6.onrender.com/usage \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
-    "id": "01945162-52fc-739b-98de-e2ac9f2eec49"
-    "timestamp": "2025-03-20T15:30:00Z"
+    "timestamp": "2025-03-20T15:30:00Z",
     "type": "Action",
     "content": "User logged in",
     "attribute": "Login", # Optional
-    "metadata": {} # Optional
+    "metadata": {"key": "value"} # Optional
+ }'
+```
+If you want to tie the usage log to a specific account, then you'll need to include the account's Assembly ID, source specific id, or domain in the url.
+```bash
+curl -X \
+ POST https://chat-widget-7vb6.onrender.com/usage/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "timestamp": "2025-03-20T15:30:00Z",
+    "type": "Action",
+    "content": "User logged in",
+    "attribute": "Login", # Optional
+    "metadata": {"key": "value"} # Optional
  }'
 ```
 
 #### Get Usage Logs
 You can either grab all the usage logs for your organization or specify a specific account through one of the three account identifying methods.
+This call is also paginated, so please include the limit and offset in your URL otherwise the default `limit=100` and `offset=0` will be used.
+Note: the logs are returned in decreasing timestamp order so the newest logs are returned first.
+
+The logs are returned in this format `{"logs": {"data": [...], "has_next_page": ..., "next_cursor":...}}`
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/usage \
+ GET "https://chat-widget-7vb6.onrender.com/usage?limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/usage/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET "https://chat-widget-7vb6.onrender.com/usage/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 
 #### Update Usage Log
-Update any values in a usage log by its ID. Include the values that you want to update in the input data. Note, that updating the metadata field will completely override the existing metadata value.
+Update any values in a usage log by the usage log's ID. Include the values that you want to update in the input data. Note, that updating the metadata field will completely override the existing metadata value.
+The ID of the updated log is returned in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`.
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
+ PUT https://chat-widget-7vb6.onrender.com/usage/usageLogID \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -276,10 +300,10 @@ curl -X \
 ```
 
 #### Delete Usage Log
-Delete a usage log by its specific ID which is returned when a usage log is created.
+Delete a usage log by its specific ID which is returned when a usage log is created. The return is empty `{}`.
 ```bash
 curl -X \
- DELETE https://chat-widget-7vb6.onrender.com/accounts/usage/usageLogID \
+ DELETE https://chat-widget-7vb6.onrender.com/usage/usageLogID \
  -H "Authorization: <API_KEY>"
 ```
 
