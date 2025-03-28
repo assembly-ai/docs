@@ -58,7 +58,10 @@
         
          "usage/analytics", 
          "usage/shortcuts",
-         "usage/developer/interactionsAPI"
+         {
+          "group": "Developer",
+          "pages": ["usage/developer/interactionsAPI", "usage/developer/accountsAPI"]
+        }
       ]
     }
     
