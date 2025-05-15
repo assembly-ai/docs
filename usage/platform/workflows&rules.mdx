@@ -1,24 +1,81 @@
 ---
 title: 'Workflows & Rules'
-description: 'Setup those complex automations to route issues to the right teams, run playbooks for customer success, and more with 3 clicks. To create a workflow, click on the “add workflow” button'
+description: 'Workflows are the backbone for most automations within the platform. 
+From responding to customer support requests with a templated response to following up with a renewal notice, 
+we hope our workflow builder will accomplish all of that and more.' 
+
 ---
 
+#### Setup
+
+
+To create a workflow, tap on the “+ Create” on the top righthand corner of the page.
 <br/>
+# change this
 <img
   style={{ borderRadius: '0.5rem' }}
   src="../../images/Workflows.png"
 />
 <br/>
 
-Describe the title and then select a “trigger”. This refers to what will start the workflow and can be things like a new support request tagged as a bug. Now you will setup the rules for this workflow.
+#### Creating a Workflow
+
+Once you’ve decided which type of workflow you would like to create, you’ll see the following page 
+
+<br/>
+# change this
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="../../images/Workflows.png"
+/>
+<br/>
+
+You’ll notice the workflow tool bar on the left hand side with the following elements: triggers, conditions, waits, and actions. 
+
+By design, a workflow needs a trigger, a condition, the lack of which suggests a blanket action for a specific trigger, and an action. With that being said, we’ll dive into what each of these mean
+
+
+#### Triggers
+
+A trigger is the element that initiates a workflow. Interaction triggers could include items such as a new interaction being created, the status being updated, a label being changed, etc. An account trigger includes elements such as when a health score is updated, specific attributes (usage, sentiment, etc) changes, as well as when the account increases their payment plan. 
+
+br/>
+# change this
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="../../images/WorkflowTriggers.png"
+/>
+<br/>
+
+
+#### Conditions
+
+The condition(s) is the set of dependencies that the trigger may or must have for the workflow to run. On the interaction side, this could include interaction specific field updates such as status, label, assignee, team, and more. Again, the account workflow condition set reflects account size, renewal date, pricing tier, and more. 
+
+br/>
+# change this
+<img
+  style={{ borderRadius: '0.5rem' }}
+  src="../../images/WorkflowConditions.png"
+/>
+<br/>
+
+
+#### Waits
+
+Typically used for followups or adding a buffer between a trigger and the action, the “wait” time is exactly as advertised. Simply drag and drop the wait component and select the amount of time an action must wait before being triggered. 
+
+
+#### Actions
+
+These are the meat & potatoes of workflows. The outcome you would like to drive via interaction or account workflows are determined by the action or set of actions you setup. On the interaction side of things, the actions range from replying to customer interactions with templates (or an AI) to updating statuses, tags, and more on the interaction itself. 
+Accounts on the other hand have actions such as checking in with the customer, sending renewal notices, sending slack messages to CSM’s about changes in the customer’s health, and much more. 
 
 <br/>
 <img
   style={{ borderRadius: '0.5rem' }}
-  src="../../images/Create_Workflow.png"
+  src="../../images/WorkflowActions.png"
 />
 <br/>
-
-Select the appropriate condition (if statement) for the workflow and then select an action. Once the ruleset for the workflow is saved, you can view them on the main workflow table! 
 
 

@@ -53,7 +53,7 @@
         }, 
         {
           "group": "Customer Success",
-          "pages": ["usage/customerSuccess/productInsights", "usage/customerSuccess/announcements", "usage/customerSuccess/companies"]
+          "pages": ["usage/customerSuccess/Overview", "usage/customerSuccess/productInsights", "usage/customerSuccess/announcements", "usage/customerSuccess/companies"]
         },
         
          "usage/analytics", 
