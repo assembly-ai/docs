@@ -15,7 +15,7 @@ If you lose your API key, you will need to make a new one.
 
 ## Accounts
 
-Maintain your accounts through these API endpoints. Accounts types include: Company or Customer.
+Maintain your accounts through these API endpoints. Accounts types include: Company or Customer. In general you can refer to an account by appending its Assembly ID or domain to the URL. Or you can add the source specific ID of the account as a query parameter.
 
 #### Create Account 
 Required attributes are `type`, `name`, and `domain`. The domain for a Company Account should be a domain i.e. `company.com` while the domain for a Customer Account should be an email i.e. `name@company.com`.
@@ -23,7 +23,7 @@ There are various optional attributes that you can add to define the account. Th
 
 Note there are attributes specific to Company versus Customer Accounts:
 - Company Specific Attributes: `company_type` and `number_of_seats`
-- Customer Specific Attributes: `company_id`
+- Customer Specific Attributes: `role`
 
 The Assembly ID of the created account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`
 ```bash
@@ -35,28 +35,27 @@ curl -X \
 	"type": "Company",
 	"name": "account_name",
 	"domain": "account.com",
-    "source_specific_ids": ["sourceSpecificID"], # Optional
-    "image_url": "https://cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", # Optional
-    "phone": ["123456789"], # Optional
-    "contract_value": 100, # Optional
-    "contract_type": "Month", # Optional - either "Month" or "Year"
-    "renewal_date": "2027-12-31", # Optional
-    "trial_expiration_date": "2025-07-31", # Optional
-    "tier": "8780fd65-3b8d-4c06-891b-636acda3a71c", # Optional - ID of the tier label 
-    "stage": "c738534b-62d6-4f0a-aee1-3a5c6d860d86", # Optional - ID of the stage label
-    "tags": ["0195a666-3405-7664-aaf1-ad65b6091e96", "0195af0e-3213-78fc-a3cf-cb8c192abeaf"], # Optional - List of account tag labels to include
-    "notes": "A note about the account", # Optional
-    "id_in_tool": "idA", # Optional - the ID of the company/user in your own tool for reference
-    "additional_properties": { # Optional - a key-value mapping of custom attributes specific to the account
-        "Login_count": 2,
-        "Timezone": "America/Los_Angeles"
-    },
-    # Only supported for company accounts
-    "company_type": "0195a67e-1ac2-748f-9f8e-709449c2e68a", # Optional - ID of the company type label
-    "number_of_seats": 20, # Optional
-    # Only supported for customer accounts
-    "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49", # Optional - Assembly ID of the company account to attach the customer to
-    "role": "support", # Optional - The role/domain of the customer
+   "source_specific_ids": ["accountSSID"], # Optional
+   "image_url": "https://cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", # Optional
+   "phone": ["123456789"], # Optional
+   "contract_value": 100, # Optional
+   "contract_type": "Month", # Optional - either "Month" or "Year"
+   "renewal_date": "2027-12-31", # Optional
+   "trial_expiration_date": "2025-07-31", # Optional
+   "tier": "8780fd65-3b8d-4c06-891b-636acda3a71c", # Optional - ID of the tier label 
+   "stage": "c738534b-62d6-4f0a-aee1-3a5c6d860d86", # Optional - ID of the stage label
+   "tags": ["0195a666-3405-7664-aaf1-ad65b6091e96", "0195af0e-3213-78fc-a3cf-cb8c192abeaf"], # Optional - List of account tag labels to include
+   "notes": "A note about the account", # Optional
+   "id_in_tool": "idA", # Optional - the ID of the company/user in your own tool for reference
+   "additional_properties": { # Optional - a key-value mapping of custom attributes specific to the account
+      "Login_count": 2,
+      "Timezone": "America/Los_Angeles"
+   },
+   # Only supported for company accounts
+   "company_type": "0195a67e-1ac2-748f-9f8e-709449c2e68a", # Optional - ID of the company type label
+   "number_of_seats": 20, # Optional
+   # Only supported for customer accounts
+   "role": "support", # Optional - The role/domain of the customer
  }'
 ```
 
@@ -70,7 +69,7 @@ curl -X \
  -H "Authorization: <API_KEY>"
 ```
 To grab a specific account, you can use the ID from Assembly, the domain of the account, or a source specific ID that you've already linked to the account. This call is not paginated since you are only grabbing a specific account.
-The account is returned in this format `{"account":{...}}`
+The account is returned in this format `{"account":{...}}`. Note that the source specific ID format is a bit different since it needs to be passed in as a query parameter.
 ```bash
 curl -X \
  GET https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
@@ -83,13 +82,14 @@ curl -X \
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/sourceSpecificID \
+ GET https://chat-widget-7vb6.onrender.com/accounts/source_specific_id=accountSSID \
  -H "Authorization: <API_KEY>"
 ```
 
 #### Update Account
-Update any of the account fields except the `additional_properties` with this method. You can update an account via the Assembly ID, the domain of the account, or with a source specific ID that you've already linked to the account.
+Update any of the account fields with this method. You can update an account via the Assembly ID, the domain of the account, or with a source specific ID that you've already linked to the account.
 In the input arguments, include any of the fields that you want to update. 
+For updating additional properties, if the key already exists on the account then the value of that key will be updated, otherwise the whole key value pair will be added. If you want more granular actions for additional properties, please use the Additional Properties Endpoints.
 
 All the allowed parameters are the same as the `CREATE` endpoint except for tags and source specific IDs. 
 Instead of a general tags list the arguments are `added_tags` and `removed_tags`. Similarily, instead of a general source specific IDs list, the arguments are 'added_source_specific_ids' and 'removed_source_specific_ids'.
@@ -104,10 +104,32 @@ curl -X \
     "name": "New Account Name",
     "added_tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
     "removed_tags": ["0195a666-3405-7664-aaf1-ad65b6091e96"],
-    "added_source_specific_ids": ["newSourceSpecificID"],
-    "removed_source_specific_ids": ["sourceSpecificID"]
+    "added_source_specific_ids": ["newAccountSSID"],
+    "removed_source_specific_ids": ["accountSSID"],
+    "additional_properties": {
+      "existingKey": "newValue",
+      "newKey": "newValue"
+    }
  }'
 ```
+
+#### Upsert Account
+A combination of the create and the update endpoints! If no Assembly ID, domain, nor source specific ID is passed in or if the values pass in don't map to an existing account, then the account will be created. Otherwise, the existing account will be updated. 
+The Assembly ID of the updated or created account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
+
+We recommend always inputting the required attributes for create (`type`, `name`, and `domain`) so that the endpoint won't fail when the account needs to be created. 
+
+```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/upsert/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+	"type": "Company",
+	"name": "account_name",
+	"domain": "account.com",
+   "number_of_seats": 2
+ }'
 
 #### Delete Account
 Delete an account by referencing the account with its Assembly ID, domain, or source specific ID. The return is empty `{}`.
@@ -117,17 +139,154 @@ curl -X \
  -H "Authorization: <API_KEY>"
 ```
 
+## Contacts
+
+Endpoints for managing your contacts (customers who are apart of a company account). These endpoints are similar in format to the Accounts APIs. In general you can refer to a contact by appending its Assembly ID or domain to the URL. Or you can add the source specific ID of the contact as a query parameter.
+
+#### Create Contact 
+Required attributes are `name`,`domain` (email i.e. `name@company.com`), and some sort of company identifier. For the company identifier, you need to include the Assembly ID of the company in `company_id`, the domain of the company in `company_domain`, or the source specific ID of the company in `company_source_specific_id`.
+There are various optional attributes that you can add to define the contact, all the options are shown below. You can also add source specific IDs that will then act as another id for you to reference the contact with in lieu of using our Assembly ID for the contact.
+
+The Assembly ID of the created contact is returned in the format `{"id":"01966e6b-3219-78be-a0fe-260e590565f5"}`
+```bash
+curl -X \
+ POST https://chat-widget-7vb6.onrender.com/contacts \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+	"name": "contact_name",
+	"domain": "name@company.com",
+   # 1 of the 3 company values below must be included
+   "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49", 
+   "company_domain": "company.com",
+   "company_source_specific_id": "companySSID",
+   "source_specific_ids": ["contactSSID"], # Optional
+   "image_url": "https://cdn.prod.website-files.com/673724d522a7665c49daddc6/67376a99be79e6944889418a_main-logo.svg", # Optional
+   "phone": ["123456789"], # Optional
+   "contract_value": 100, # Optional
+   "contract_type": "Month", # Optional - either "Month" or "Year"
+   "renewal_date": "2027-12-31", # Optional
+   "trial_expiration_date": "2025-07-31", # Optional
+   "tier": "8780fd65-3b8d-4c06-891b-636acda3a71c", # Optional - ID of the tier label 
+   "stage": "c738534b-62d6-4f0a-aee1-3a5c6d860d86", # Optional - ID of the stage label
+   "tags": ["0195a666-3405-7664-aaf1-ad65b6091e96", "0195af0e-3213-78fc-a3cf-cb8c192abeaf"], # Optional - List of account tag labels to include
+   "notes": "A note about the account", # Optional
+   "id_in_tool": "idA", # Optional - the ID of the company/user in your own tool for reference
+   "additional_properties": { # Optional - a key-value mapping of custom attributes specific to the account
+      "Login_count": 2,
+      "Timezone": "America/Los_Angeles"
+   },
+   "role": "support", # Optional - The role/domain of the customer
+ }'
+```
+
+#### Get Contacts
+You can grab all the contacts for your organization by calling `contacts`. This call is paginated, so please include the limit and offset in your URL otherwise the default `limit=100` and `offset=0` will be used.
+The return type is `{"contacts": {"data": [...], "has_next_page": ..., "next_cursor": ...}}`.
+```bash
+curl -X \
+ GET "https://chat-widget-7vb6.onrender.com/contacts?limit=50&offset=0" \
+ -H "Authorization: <API_KEY>"
+```
+To grab a company account's contacts, you can use the ID from Assembly, the domain of the company account, or a source specific ID that you've already linked to the company account. This call is also paginated, so please include the limit and offset in your URL.
+The contacts are returned in this format `{"contacts":{...}}`. Note that the format for passing in the source specific ID is a bit different, it needs to be passed in as a query parameter.
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/contacts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/contacts/company.com\
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/contacts/source_specific_id=companySSID \
+ -H "Authorization: <API_KEY>"
+```
+To grab a specific contact, you can use the ID from Assembly, the domain of the contact, or a source specific ID that you've already linked to the contact. This call is not paginated since you are only grabbing a specific account.
+The contact is returned in this format `{"contact":{...}}`
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/contacts/01966e6b-3219-78be-a0fe-260e590565f \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/contacts/name@company.com\
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET https://chat-widget-7vb6.onrender.com/contacts/source_specific_id=contactSSID \
+ -H "Authorization: <API_KEY>"
+```
+
+#### Update Contact
+Update any of the contact's fields via the Assembly ID, the domain of the contact, or with a source specific ID that you've already linked to the contact.
+In the input arguments, include any of the fields that you want to update. 
+For updating additional properties, if the key already exists on the account then the value of that key will be updated, otherwise the whole key value pair will be added. If you want more granular actions for additional properties, please use the Additional Properties Endpoints.
+
+All the allowed parameters are the same as the `CREATE` endpoint except for tags and source specific IDs. 
+Instead of a general tags list the arguments are `added_tags` and `removed_tags`. Similarily, instead of a general source specific IDs list, the arguments are 'added_source_specific_ids' and 'removed_source_specific_ids'.
+
+The Assembly ID of the updated contact is returned in the format `{"id":"01966e6b-3219-78be-a0fe-260e590565f"}`. 
+```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/contacts/01966e6b-3219-78be-a0fe-260e590565f \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "name": "New Contact Name",
+    "added_tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
+    "removed_tags": ["0195a666-3405-7664-aaf1-ad65b6091e96"],
+    "added_source_specific_ids": ["newContactSSID"],
+    "removed_source_specific_ids": ["contactSSID"],
+    "additional_properties": {
+      "existingKey": "newValue",
+      "newKey": "newValue"
+    }
+ }'
+```
+
+#### Upsert Contact
+A combination of the create and the update endpoints! If no Assembly ID, domain, nor source specific ID is passed in or if the values pass in don't map to an existing contact, then the contact will be created. Otherwise, the existing account will be updated. 
+The Assembly ID of the updated or created contact is returned in the format `{"id":"01966e6b-3219-78be-a0fe-260e590565f"}`. 
+
+We recommend always inputting the required attributes for create (`name`, `domain`, and one of the company identifiers so `company_id`, `company_domain` or `company_source_specific_id`) so that the endpoint won't fail when the contact needs to be created. 
+
+```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/contacts/upsert/01966e6b-3219-78be-a0fe-260e590565f \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+	"name": "account_name",
+	"domain": "account.com",
+   "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49",
+   "role": "Customer Success Buyer"
+ }'
+
+#### Delete Contact
+Delete a contact by referencing the contact with its Assembly ID, domain, or source specific ID. The return is empty `{}`.
+```bash
+curl -X \
+ DELETE https://chat-widget-7vb6.onrender.com/contacts/01966e6b-3219-78be-a0fe-260e590565f \
+ -H "Authorization: <API_KEY>"
+```
+
 
 ## Additional Properties
 
-The custom attributes of an account that's stored on a per account basis. Therefore, all of these endpoints affect a specific account's additional properties.
+The custom attributes are stored on a per item basis. Therefore, all of these endpoints affect a specific account's or contact's additional properties. In general, the additional properties endpoints are in this format `add_props/:item/:id`
 
 #### Create Additional Properties
-To denote which account to create the property on, you have to append the url with either the account's Assembly ID, source specific id, or domain.
-Then include a map of the properties you want to add to the value of each property. If the property already exists on that account's additional properties, an "already exists" error will be returned. Otherwise, the Assembly ID of the account that the property was created for is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
+To denote which account/contact to create the property on, you have to append the item (`accounts` or `contacts`) and either the item's Assembly ID, source specific id, or domain to the url.
+Then include a map of the properties you want to add to the value of each property. If the property already exists on that item's additional properties, an "already exists" error will be returned. Otherwise, the Assembly ID of the account/contact that the property was created for is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ POST https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -137,30 +296,30 @@ curl -X \
 ```
 
 #### Get Additional Properties
-Specify either the Assembly ID, domain, or source specific ID of the account to get the additional properties of the account.
+Specify the item (`accounts` or `contacts`) and either the Assembly ID, domain, or source specific ID of the item to get the additional properties.
 The return includes the ID of the account and the account's additional properties in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49", "additional_properties": {...}}`
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/add_props/account.com \
+ GET https://chat-widget-7vb6.onrender.com/add_props/accounts/account.com \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/add_props/sourceSpecificID \
+ GET https://chat-widget-7vb6.onrender.com/add_props/accounts/source_specific_id=accountSSID \
  -H "Authorization: <API_KEY>"
 ```
 
 #### Update Additional Properties
-Update an account's aditional properties by specifying the account's Assembly ID, domain, or source specific ID. Include any of the fields that we want to update with a mapping to their new values.
-If the specified field does not already exist in the account's additional properties, we will directly add it. The ID of the account whose additional properties were updated is returned in the format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`
+Update an item's aditional properties by specifying the item (`accounts` or `contacts`) and either the item's Assembly ID, domain, or source specific ID. Include any of the fields that we want to update with a mapping to their new values.
+If the specified field does not already exist in the item's additional properties, we will directly add it. The ID of the account/contact whose additional properties were updated is returned in the format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ PUT https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -171,10 +330,10 @@ curl -X \
 ```
 
 #### Delete Additional Property
-Similarly, reference an account with its Assembly ID, domain, or source specific ID and then specify which properties to delete by the property names. The return is empty `{}`.
+Similarly, specify the item (`accounts` or `contacts`) and its Assembly ID, domain, or source specific ID and then specify which properties to delete by the property names. The return is empty `{}`.
 ```bash
 curl -X DELETE \
-  https://chat-widget-7vb6.onrender.com/accounts/add_props/01945162-52fc-739b-98de-e2ac9f2eec49 \
+  https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
   -H "Authorization: <API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -265,10 +424,10 @@ curl -X \
     "metadata": {"key": "value"} # Optional
  }'
 ```
-If you want to tie the usage log to a specific account, then you'll need to include the account's Assembly ID, source specific id, or domain in the url.
+If you want to tie the usage log to a specific item, then you'll need to include the item (`accounts` or `contacts`) and its Assembly ID, source specific id, or domain in the url.
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/usage/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ POST https://chat-widget-7vb6.onrender.com/usage/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -281,7 +440,7 @@ curl -X \
 ```
 
 #### Get Usage Logs
-You can either grab all the usage logs for your organization or specify a specific account through one of the three account identifying methods.
+You can either grab all the usage logs for your organization or specify a specific account/contact through one of the three identifying methods.
 This call is also paginated, so please include the limit and offset in your URL otherwise the default `limit=100` and `offset=0` will be used.
 Note: the logs are returned in decreasing timestamp order so the newest logs are returned first.
 
@@ -293,7 +452,18 @@ curl -X \
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/usage/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0" \
+ GET "https://chat-widget-7vb6.onrender.com/usage/accounts/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0" \
+ -H "Authorization: <API_KEY>"
+```
+```bash
+curl -X \
+ GET "https://chat-widget-7vb6.onrender.com/usage/contacts/0196d9f0-f6f7-7c5c-b6ee-40c8b207b352?limit=50&offset=0" \
+ -H "Authorization: <API_KEY>"
+```
+You can also grab a specific usage log by appending the usage log's id.
+```bash
+curl -X \
+ GET "https://chat-widget-7vb6.onrender.com/usage/usageLogID" \
  -H "Authorization: <API_KEY>"
 ```
 
