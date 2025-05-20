@@ -82,7 +82,7 @@ curl -X \
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/source_specific_id=accountSSID \
+ GET "https://chat-widget-7vb6.onrender.com/accounts?source_specific_id=accountSSID" \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -91,8 +91,8 @@ Update any of the account fields with this method. You can update an account via
 In the input arguments, include any of the fields that you want to update. 
 For updating additional properties, if the key already exists on the account then the value of that key will be updated, otherwise the whole key value pair will be added. If you want more granular actions for additional properties, please use the Additional Properties Endpoints.
 
-All the allowed parameters are the same as the `CREATE` endpoint except for tags and source specific IDs. 
-Instead of a general tags list the arguments are `added_tags` and `removed_tags`. Similarily, instead of a general source specific IDs list, the arguments are 'added_source_specific_ids' and 'removed_source_specific_ids'.
+All the allowed parameters are the same as the `CREATE` endpoint except there are additional parameters for tags and source specific IDs. 
+The general `tags` will be tags that are being added and then there's an additional `removed_tags` to indicate removing a tag. Similarily, the `source_specific_ids` will be added while the 'removed_source_specific_ids' will be removed.
 
 The Assembly ID of the updated account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
 ```bash
@@ -102,9 +102,9 @@ curl -X \
  -H "Authorization: <API_KEY>" \
  -d '{
     "name": "New Account Name",
-    "added_tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
+    "tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
     "removed_tags": ["0195a666-3405-7664-aaf1-ad65b6091e96"],
-    "added_source_specific_ids": ["newAccountSSID"],
+    "source_specific_ids": ["newAccountSSID"],
     "removed_source_specific_ids": ["accountSSID"],
     "additional_properties": {
       "existingKey": "newValue",
@@ -117,7 +117,7 @@ curl -X \
 A combination of the create and the update endpoints! If no Assembly ID, domain, nor source specific ID is passed in or if the values pass in don't map to an existing account, then the account will be created. Otherwise, the existing account will be updated. 
 The Assembly ID of the updated or created account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
 
-We recommend always inputting the required attributes for create (`type`, `name`, and `domain`) so that the endpoint won't fail when the account needs to be created. 
+We recommend always inputting the required attributes for create (`type`, `name`, and `domain`) so that the endpoint won't fail when the account needs to be created.
 
 ```bash
 curl -X \
@@ -130,6 +130,19 @@ curl -X \
 	"domain": "account.com",
    "number_of_seats": 2
  }'
+ ```
+ ```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/accounts/upsert?source_specific_id=accountSSID \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+	"type": "Company",
+	"name": "account_name",
+	"domain": "account.com",
+   "number_of_seats": 2
+ }'
+ ```
 
 #### Delete Account
 Delete an account by referencing the account with its Assembly ID, domain, or source specific ID. The return is empty `{}`.
@@ -192,17 +205,17 @@ To grab a company account's contacts, you can use the ID from Assembly, the doma
 The contacts are returned in this format `{"contacts":{...}}`. Note that the format for passing in the source specific ID is a bit different, it needs to be passed in as a query parameter.
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET https://chat-widget-7vb6.onrender.com/contacts/company/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0 \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/company.com\
+ GET https://chat-widget-7vb6.onrender.com/contacts/company/company.com?limit=50&offset=0\
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/source_specific_id=companySSID \
+ GET "https://chat-widget-7vb6.onrender.com/contacts/company?company_source_specific_id=companySSID&limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 To grab a specific contact, you can use the ID from Assembly, the domain of the contact, or a source specific ID that you've already linked to the contact. This call is not paginated since you are only grabbing a specific account.
@@ -219,7 +232,7 @@ curl -X \
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/source_specific_id=contactSSID \
+ GET "https://chat-widget-7vb6.onrender.com/contacts?source_specific_id=contactSSID" \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -228,8 +241,8 @@ Update any of the contact's fields via the Assembly ID, the domain of the contac
 In the input arguments, include any of the fields that you want to update. 
 For updating additional properties, if the key already exists on the account then the value of that key will be updated, otherwise the whole key value pair will be added. If you want more granular actions for additional properties, please use the Additional Properties Endpoints.
 
-All the allowed parameters are the same as the `CREATE` endpoint except for tags and source specific IDs. 
-Instead of a general tags list the arguments are `added_tags` and `removed_tags`. Similarily, instead of a general source specific IDs list, the arguments are 'added_source_specific_ids' and 'removed_source_specific_ids'.
+All the allowed parameters are the same as the `CREATE` endpoint except there are additional parameters for tags and source specific IDs. 
+The general `tags` will be tags that are being added and then there's an additional `removed_tags` to indicate removing a tag. Similarily, the `source_specific_ids` will be added while the 'removed_source_specific_ids' will be removed.
 
 The Assembly ID of the updated contact is returned in the format `{"id":"01966e6b-3219-78be-a0fe-260e590565f"}`. 
 ```bash
@@ -239,9 +252,9 @@ curl -X \
  -H "Authorization: <API_KEY>" \
  -d '{
     "name": "New Contact Name",
-    "added_tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
+    "tags": ["18eb8ad2-b538-420a-80e5-7827429f3ed3"],
     "removed_tags": ["0195a666-3405-7664-aaf1-ad65b6091e96"],
-    "added_source_specific_ids": ["newContactSSID"],
+    "source_specific_ids": ["newContactSSID"],
     "removed_source_specific_ids": ["contactSSID"],
     "additional_properties": {
       "existingKey": "newValue",
@@ -267,6 +280,19 @@ curl -X \
    "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49",
    "role": "Customer Success Buyer"
  }'
+ ```
+  ```bash
+curl -X \
+ PUT https://chat-widget-7vb6.onrender.com/contacts/upsert?source_specific_id=contactSSID \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+	"name": "account_name",
+	"domain": "account.com",
+   "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49",
+   "role": "Customer Success Buyer"
+ }'
+ ```
 
 #### Delete Contact
 Delete a contact by referencing the contact with its Assembly ID, domain, or source specific ID. The return is empty `{}`.
@@ -310,7 +336,7 @@ curl -X \
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/add_props/accounts/source_specific_id=accountSSID \
+ GET "https://chat-widget-7vb6.onrender.com/add_props/accounts?source_specific_id=accountSSID" \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -457,7 +483,7 @@ curl -X \
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/usage/contacts/0196d9f0-f6f7-7c5c-b6ee-40c8b207b352?limit=50&offset=0" \
+ GET "https://chat-widget-7vb6.onrender.com/usage/contacts?source_specific_id=contactSSID&limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 You can also grab a specific usage log by appending the usage log's id.
