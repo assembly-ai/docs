@@ -127,8 +127,7 @@ curl -X \
  -d '{
 	"type": "Company",
 	"name": "account_name",
-	"domain": "account.com",
-   "number_of_seats": 2
+	"domain": "account.com"
  }'
  ```
  ```bash
@@ -139,8 +138,7 @@ curl -X \
  -d '{
 	"type": "Company",
 	"name": "account_name",
-	"domain": "account.com",
-   "number_of_seats": 2
+	"domain": "account.com"
  }'
  ```
 
@@ -277,8 +275,7 @@ curl -X \
  -d '{
 	"name": "account_name",
 	"domain": "account.com",
-   "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49",
-   "role": "Customer Success Buyer"
+   "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49"
  }'
  ```
   ```bash
@@ -289,8 +286,7 @@ curl -X \
  -d '{
 	"name": "account_name",
 	"domain": "account.com",
-   "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49",
-   "role": "Customer Success Buyer"
+   "company_id": "01945162-52fc-739b-98de-e2ac9f2eec49"
  }'
  ```
 
@@ -434,8 +430,13 @@ curl -X \
 Here are the API endpoints for sending usage logs to be stored under a specific account.
 
 #### Add Usage Log
-The required attributes are `timestamp` of when the event happened, the `type` of event i.e. "Action" or "Message", and some `content` about the event.
-Additionally, you can add an `attribute` that the log should be tied to and any metadata. We'll use the attribute to group logs into categories that can accordingly be used for calculating account health score.
+The required attributes are:
+- `timestamp`: when the event happened
+- `type`: the type of log, the options are "Action", "Metric", or "CumulativeMetric"
+- `content`: what happened in the log (think the string that shows up in your logs)
+- `attribute`: the category that the log is related to, we'll use this attribute to group logs together for account 360s and for calculating health scores (i.e. "Login" or "AccountSpend")
+- `value`: if the type of the log is "Metric" or "CumulativeMetric", we require you to pass in the value of the metric so that we can use it for grouping and filtering (i.e. $20 or 7)
+Additionally, you can add any metadata that you want to store.
 The ID of the created log is returned in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`.
 ```bash
 curl -X \
@@ -446,7 +447,21 @@ curl -X \
     "timestamp": "2025-03-20T15:30:00Z",
     "type": "Action",
     "content": "User logged in",
-    "attribute": "Login", # Optional
+    "attribute": "Login",
+    "metadata": {"key": "value"} # Optional
+ }'
+```
+```bash
+curl -X \
+ POST https://chat-widget-7vb6.onrender.com/usage \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "timestamp": "2025-03-20T15:30:00Z",
+    "type": "Metric",
+    "content": "User spent $20 from their savings account",
+    "attribute": "AccountSpend",
+    "value": 20,
     "metadata": {"key": "value"} # Optional
  }'
 ```
