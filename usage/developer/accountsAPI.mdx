@@ -132,7 +132,7 @@ curl -X \
  ```
  ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/accounts/upsert?source_specific_id=accountSSID \
+ PUT "https://chat-widget-7vb6.onrender.com/accounts/upsert?source_specific_id=accountSSID" \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -280,7 +280,7 @@ curl -X \
  ```
   ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/contacts/upsert?source_specific_id=contactSSID \
+ PUT "https://chat-widget-7vb6.onrender.com/contacts/upsert?source_specific_id=contactSSID" \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -469,6 +469,19 @@ If you want to tie the usage log to a specific item, then you'll need to include
 ```bash
 curl -X \
  POST https://chat-widget-7vb6.onrender.com/usage/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+    "timestamp": "2025-03-20T15:30:00Z",
+    "type": "Action",
+    "content": "User logged in",
+    "attribute": "Login", # Optional
+    "metadata": {"key": "value"} # Optional
+ }'
+```
+```bash
+curl -X \
+ POST "https://chat-widget-7vb6.onrender.com/usage/ontacts?source_specific_id=contactSSID" \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
