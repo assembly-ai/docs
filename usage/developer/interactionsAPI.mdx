@@ -47,7 +47,7 @@ You can also pass in a base64 encoded image if you prefer, or an image URL:
 curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 -F "query=Sample query text" \
 -F "files_base64=<base64 encoded image>" \
--H "Authorization: 3fb05781f6504431e7e38c4ba0617097d59aa09e611893f9dfbc306158bffa4e8a3e86f239a3cba19ebe4c5a4bae10d2" \
+-H "Authorization: <API_KEY>" \
 -H "Content-Type: multipart/form-data"
 ```
 
@@ -55,7 +55,7 @@ curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 -F "query=Sample query text" \
 -F "files_image_url=https://example.com/img.jpg" \
--H "Authorization: 3fb05781f6504431e7e38c4ba0617097d59aa09e611893f9dfbc306158bffa4e8a3e86f239a3cba19ebe4c5a4bae10d2" \
+-H "Authorization: <API_KEY>" \
 -H "Content-Type: multipart/form-data"
 ```
 
@@ -66,7 +66,7 @@ curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 -F "query=Sample query text" \
 -F "files_base64=<base64 encoded image_1>" \
 -F "files_base64=<base64 encoded image_2>" \
--H "Authorization: 3fb05781f6504431e7e38c4ba0617097d59aa09e611893f9dfbc306158bffa4e8a3e86f239a3cba19ebe4c5a4bae10d2" \
+-H "Authorization: <API_KEY>" \
 -H "Content-Type: multipart/form-data"
 ```
 
