@@ -19,23 +19,23 @@ Here is the API endpoint for sending events to Assembly. The only required field
 
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/interaction \
+ POST https://chat-widget-7vb6.onrender.com/interactions \
  -F "query=Sample query text" \
  -H "Authorization: <API_KEY>" \
  -H "Content-Type: multipart/form-data" 
 ```
 
-You can also pass in additional fields, as seen below. These are all optional, but they include the title, information about the user (user_name, user_email, user_image_url, user_username), and the query.
+If you want to specify who is sending/creating the ticket, include a user. The user must have an email field. All the other fields (`id`, `name`, `username`, `image_url`) are optional.
+You can also pass in other optional fields like the title, original timestamp, and additional attributes.
 
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/interaction \
+ POST https://chat-widget-7vb6.onrender.com/interactions \
  -F "title=Sample title" \
  -F "query=Sample query text" \
- -F "user_name=John Doe" \
- -F "user_email=john@example.com" \
- -F "user_image_url=https://example.com/profile.jpg" \
- -F "user_username=johndoe" \
+ -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\"}" \
+ -F "additional_properties={\"key1\": \"value1\", \"key2\": 123, \"key3\": \"value3\"}" \
+ -F "original_timestamp=2024-06-10T18:34:00Z" \
  -H "Authorization: <API_KEY>" \
  -H "Content-Type: multipart/form-data"
 ```
@@ -44,24 +44,16 @@ curl -X \
 You can also pass in a base64 encoded image if you prefer, or an image URL:
 
 ```bash
-curl -X POST https://chat-widget-7vb6.onrender.com/interaction \
--F "title=Sample title" \
+curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 -F "query=Sample query text" \
--F "user_name=John Doe" \
--F "user_email=john@example.com" \
--F "user_image_url=https://example.com/profile.jpg" \
 -F "files_base64=<base64 encoded image>" \
 -H "Authorization: 3fb05781f6504431e7e38c4ba0617097d59aa09e611893f9dfbc306158bffa4e8a3e86f239a3cba19ebe4c5a4bae10d2" \
 -H "Content-Type: multipart/form-data"
 ```
 
 ```bash
-curl -X POST https://chat-widget-7vb6.onrender.com/interaction \
--F "title=Sample title" \
+curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 -F "query=Sample query text" \
--F "user_name=John Doe" \
--F "user_email=john@example.com" \
--F "user_image_url=https://example.com/profile.jpg" \
 -F "files_image_url=https://example.com/img.jpg" \
 -H "Authorization: 3fb05781f6504431e7e38c4ba0617097d59aa09e611893f9dfbc306158bffa4e8a3e86f239a3cba19ebe4c5a4bae10d2" \
 -H "Content-Type: multipart/form-data"
@@ -70,12 +62,8 @@ curl -X POST https://chat-widget-7vb6.onrender.com/interaction \
 You can attach multiple images by passing in multiple files.
 
 ```bash
-curl -X POST https://chat-widget-7vb6.onrender.com/interaction \
--F "title=Sample title" \
+curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 -F "query=Sample query text" \
--F "user_name=John Doe" \
--F "user_email=john@example.com" \
--F "user_image_url=https://example.com/profile.jpg" \
 -F "files_base64=<base64 encoded image_1>" \
 -F "files_base64=<base64 encoded image_2>" \
 -H "Authorization: 3fb05781f6504431e7e38c4ba0617097d59aa09e611893f9dfbc306158bffa4e8a3e86f239a3cba19ebe4c5a4bae10d2" \
@@ -100,7 +88,7 @@ Errors take on the following format in JSON:
 Successful responses take on the following format in JSON:
 
 ```json
-{"created_ticket_number": "AAA-111"}
+{"created_ticket_number": "ASM-111"}
 ```
 
 #### Rate Limiting
