@@ -28,7 +28,7 @@ Note there are attributes specific to Company versus Customer Accounts:
 The Assembly ID of the created account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/accounts \
+ POST https://api.wavelength.cx/accounts \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -65,24 +65,24 @@ The return type is `{"accounts": {"data": [...], "has_next_page": ..., "next_cur
 Note: the accounts are sorted by type so all Company Accounts will show up before Customer Accounts. Within each account type section, the accounts are sorted alphabetically by account name.
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/accounts?limit=50&offset=0" \
+ GET "https://api.wavelength.cx/accounts?limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 To grab a specific account, you can use the ID from Assembly, the domain of the account, or a source specific ID that you've already linked to the account. This call is not paginated since you are only grabbing a specific account.
 The account is returned in this format `{"account":{...}}`. Note that the source specific ID format is a bit different since it needs to be passed in as a query parameter.
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET https://api.wavelength.cx/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/account.com \
+ GET https://api.wavelength.cx/accounts/account.com \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/accounts?source_specific_id=accountSSID" \
+ GET "https://api.wavelength.cx/accounts?source_specific_id=accountSSID" \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -97,7 +97,7 @@ The general `tags` will be tags that are being added and then there's an additio
 The Assembly ID of the updated account is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ PUT https://api.wavelength.cx/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -121,7 +121,7 @@ We recommend always inputting the required attributes for create (`type`, `name`
 
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/accounts/upsert/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ PUT https://api.wavelength.cx/accounts/upsert/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -132,7 +132,7 @@ curl -X \
  ```
  ```bash
 curl -X \
- PUT "https://chat-widget-7vb6.onrender.com/accounts/upsert?source_specific_id=accountSSID" \
+ PUT "https://api.wavelength.cx/accounts/upsert?source_specific_id=accountSSID" \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -146,7 +146,7 @@ curl -X \
 Delete an account by referencing the account with its Assembly ID, domain, or source specific ID. The return is empty `{}`.
 ```bash
 curl -X \
- DELETE https://chat-widget-7vb6.onrender.com/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ DELETE https://api.wavelength.cx/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -161,7 +161,7 @@ There are various optional attributes that you can add to define the contact, al
 The Assembly ID of the created contact is returned in the format `{"id":"01966e6b-3219-78be-a0fe-260e590565f5"}`
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/contacts \
+ POST https://api.wavelength.cx/contacts \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -196,41 +196,41 @@ You can grab all the contacts for your organization by calling `contacts`. This 
 The return type is `{"contacts": {"data": [...], "has_next_page": ..., "next_cursor": ...}}`.
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/contacts?limit=50&offset=0" \
+ GET "https://api.wavelength.cx/contacts?limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 To grab a company account's contacts, you can use the ID from Assembly, the domain of the company account, or a source specific ID that you've already linked to the company account. This call is also paginated, so please include the limit and offset in your URL.
 The contacts are returned in this format `{"contacts":{...}}`. Note that the format for passing in the source specific ID is a bit different, it needs to be passed in as a query parameter.
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/company/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0 \
+ GET https://api.wavelength.cx/contacts/company/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0 \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/company/company.com?limit=50&offset=0\
+ GET https://api.wavelength.cx/contacts/company/company.com?limit=50&offset=0\
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/contacts/company?company_source_specific_id=companySSID&limit=50&offset=0" \
+ GET "https://api.wavelength.cx/contacts/company?company_source_specific_id=companySSID&limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 To grab a specific contact, you can use the ID from Assembly, the domain of the contact, or a source specific ID that you've already linked to the contact. This call is not paginated since you are only grabbing a specific account.
 The contact is returned in this format `{"contact":{...}}`
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/01966e6b-3219-78be-a0fe-260e590565f \
+ GET https://api.wavelength.cx/contacts/01966e6b-3219-78be-a0fe-260e590565f \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/contacts/name@company.com\
+ GET https://api.wavelength.cx/contacts/name@company.com\
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/contacts?source_specific_id=contactSSID" \
+ GET "https://api.wavelength.cx/contacts?source_specific_id=contactSSID" \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -245,7 +245,7 @@ The general `tags` will be tags that are being added and then there's an additio
 The Assembly ID of the updated contact is returned in the format `{"id":"01966e6b-3219-78be-a0fe-260e590565f"}`. 
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/contacts/01966e6b-3219-78be-a0fe-260e590565f \
+ PUT https://api.wavelength.cx/contacts/01966e6b-3219-78be-a0fe-260e590565f \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -269,7 +269,7 @@ We recommend always inputting the required attributes for create (`name`, `domai
 
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/contacts/upsert/01966e6b-3219-78be-a0fe-260e590565f \
+ PUT https://api.wavelength.cx/contacts/upsert/01966e6b-3219-78be-a0fe-260e590565f \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -280,7 +280,7 @@ curl -X \
  ```
   ```bash
 curl -X \
- PUT "https://chat-widget-7vb6.onrender.com/contacts/upsert?source_specific_id=contactSSID" \
+ PUT "https://api.wavelength.cx/contacts/upsert?source_specific_id=contactSSID" \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -294,7 +294,7 @@ curl -X \
 Delete a contact by referencing the contact with its Assembly ID, domain, or source specific ID. The return is empty `{}`.
 ```bash
 curl -X \
- DELETE https://chat-widget-7vb6.onrender.com/contacts/01966e6b-3219-78be-a0fe-260e590565f \
+ DELETE https://api.wavelength.cx/contacts/01966e6b-3219-78be-a0fe-260e590565f \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -308,7 +308,7 @@ To denote which account/contact to create the property on, you have to append th
 Then include a map of the properties you want to add to the value of each property. If the property already exists on that item's additional properties, an "already exists" error will be returned. Otherwise, the Assembly ID of the account/contact that the property was created for is returned in the format `{"id":"01945162-52fc-739b-98de-e2ac9f2eec49"}`. 
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ POST https://api.wavelength.cx/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -319,20 +319,20 @@ curl -X \
 
 #### Get Additional Properties
 Specify the item (`accounts` or `contacts`) and either the Assembly ID, domain, or source specific ID of the item to get the additional properties.
-The return includes the ID of the account and the account's additional properties in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49", "additional_properties": {...}}`
+The return includes the ID of the account and the account's additional properties in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49", "additional_properties": [...]}`
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ GET https://api.wavelength.cx/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/add_props/accounts/account.com \
+ GET https://api.wavelength.cx/add_props/accounts/account.com \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/add_props/accounts?source_specific_id=accountSSID" \
+ GET "https://api.wavelength.cx/add_props/accounts?source_specific_id=accountSSID" \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -341,7 +341,7 @@ Update an item's aditional properties by specifying the item (`accounts` or `con
 If the specified field does not already exist in the item's additional properties, we will directly add it. The ID of the account/contact whose additional properties were updated is returned in the format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ PUT https://api.wavelength.cx/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -355,7 +355,7 @@ curl -X \
 Similarly, specify the item (`accounts` or `contacts`) and its Assembly ID, domain, or source specific ID and then specify which properties to delete by the property names. The return is empty `{}`.
 ```bash
 curl -X DELETE \
-  https://chat-widget-7vb6.onrender.com/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+  https://api.wavelength.cx/add_props/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
   -H "Authorization: <API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -372,7 +372,7 @@ Here are the API endpoints for account labels. Account label types include: `Tie
 Required attributes are the `type`, `name`, and `color` of the label. Optionally, include a description. The ID of the created label will be returned in this format `{"id": "0195a666-3405-7664-aaf1-ad65b6091e96"}`.
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/accounts/labels \
+ POST https://api.wavelength.cx/accounts/labels \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -389,17 +389,17 @@ To grab a specific type of account labels, add the label type so `/account/label
 The labels are returned in this format `{"labels": [...]}`.
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/labels \
+ GET https://api.wavelength.cx/accounts/labels \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/labels/tier \
+ GET https://api.wavelength.cx/accounts/labels/tier \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ GET https://api.wavelength.cx/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -408,7 +408,7 @@ To update an account label, you must have the label id and call `/account/labels
 Include the fields that you are changing for the label in the json object. The possible arguments are `type`, `name`, `color`, and `description`. The ID of the updated label is returned as `{"id": "0195a666-3405-7664-aaf1-ad65b6091e96"}`
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ PUT https://api.wavelength.cx/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -420,7 +420,7 @@ curl -X \
 You also must have the label_id to delete an account label. Then just call `/account/labels/{label_id}` with a delete operation. The return is empty `{}`.
 ```bash
 curl -X \
- DELETE https://chat-widget-7vb6.onrender.com/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
+ DELETE https://api.wavelength.cx/accounts/labels/0195a666-3405-7664-aaf1-ad65b6091e96 \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -440,7 +440,7 @@ Additionally, you can add any metadata that you want to store.
 The ID of the created log is returned in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`.
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/usage \
+ POST https://api.wavelength.cx/usage \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -453,7 +453,7 @@ curl -X \
 ```
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/usage \
+ POST https://api.wavelength.cx/usage \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -468,7 +468,7 @@ curl -X \
 If you want to tie the usage log to a specific item, then you'll need to include the item (`accounts` or `contacts`) and its Assembly ID, source specific id, or domain in the url.
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/usage/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
+ POST https://api.wavelength.cx/usage/accounts/01945162-52fc-739b-98de-e2ac9f2eec49 \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -480,7 +480,7 @@ curl -X \
 ```
 ```bash
 curl -X \
- POST "https://chat-widget-7vb6.onrender.com/usage/contacts?source_specific_id=contactSSID" \
+ POST "https://api.wavelength.cx/usage/contacts?source_specific_id=contactSSID" \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -499,23 +499,23 @@ Note: the logs are returned in decreasing timestamp order so the newest logs are
 The logs are returned in this format `{"logs": {"data": [...], "has_next_page": ..., "next_cursor":...}}`
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/usage?limit=50&offset=0" \
+ GET "https://api.wavelength.cx/usage?limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/usage/accounts/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0" \
+ GET "https://api.wavelength.cx/usage/accounts/01945162-52fc-739b-98de-e2ac9f2eec49?limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/usage/contacts?source_specific_id=contactSSID&limit=50&offset=0" \
+ GET "https://api.wavelength.cx/usage/contacts?source_specific_id=contactSSID&limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 You can also grab a specific usage log by appending the usage log's id.
 ```bash
 curl -X \
- GET "https://chat-widget-7vb6.onrender.com/usage/usageLogID" \
+ GET "https://api.wavelength.cx/usage/usageLogID" \
  -H "Authorization: <API_KEY>"
 ```
 
@@ -524,7 +524,7 @@ Update any values in a usage log by the usage log's ID. Include the values that 
 The ID of the updated log is returned in this format `{"id": "01945162-52fc-739b-98de-e2ac9f2eec49"}`.
 ```bash
 curl -X \
- PUT https://chat-widget-7vb6.onrender.com/usage/usageLogID \
+ PUT https://api.wavelength.cx/usage/usageLogID \
  -H "Content-Type: application/json" \
  -H "Authorization: <API_KEY>" \
  -d '{
@@ -536,7 +536,7 @@ curl -X \
 Delete a usage log by its specific ID which is returned when a usage log is created. The return is empty `{}`.
 ```bash
 curl -X \
- DELETE https://chat-widget-7vb6.onrender.com/usage/usageLogID \
+ DELETE https://api.wavelength.cx/usage/usageLogID \
  -H "Authorization: <API_KEY>"
 ```
 

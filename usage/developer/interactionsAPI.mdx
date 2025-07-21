@@ -19,7 +19,7 @@ Here is the API endpoint for sending events to Assembly. The only required field
 
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/interactions \
+ POST https://api.wavelength.cx/interactions \
  -F "query=Sample query text" \
  -H "Authorization: <API_KEY>" \
  -H "Content-Type: multipart/form-data" 
@@ -30,7 +30,7 @@ You can also pass in other optional fields like the title, original timestamp, a
 
 ```bash
 curl -X \
- POST https://chat-widget-7vb6.onrender.com/interactions \
+ POST https://api.wavelength.cx/interactions \
  -F "title=Sample title" \
  -F "query=Sample query text" \
  -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\"}" \
@@ -44,7 +44,7 @@ curl -X \
 You can also pass in a base64 encoded image if you prefer, or an image URL:
 
 ```bash
-curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
+curl -X POST https://api.wavelength.cx/interactions \
 -F "query=Sample query text" \
 -F "files_base64=<base64 encoded image>" \
 -H "Authorization: <API_KEY>" \
@@ -52,7 +52,7 @@ curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 ```
 
 ```bash
-curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
+curl -X POST https://api.wavelength.cx/interactions \
 -F "query=Sample query text" \
 -F "files_image_url=https://example.com/img.jpg" \
 -H "Authorization: <API_KEY>" \
@@ -62,7 +62,7 @@ curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
 You can attach multiple images by passing in multiple files.
 
 ```bash
-curl -X POST https://chat-widget-7vb6.onrender.com/interactions \
+curl -X POST https://api.wavelength.cx/interactions \
 -F "query=Sample query text" \
 -F "files_base64=<base64 encoded image_1>" \
 -F "files_base64=<base64 encoded image_2>" \
