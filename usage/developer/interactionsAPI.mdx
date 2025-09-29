@@ -25,7 +25,8 @@ curl -X \
  -H "Content-Type: multipart/form-data" 
 ```
 
-If you want to specify who is sending/creating the ticket, include a user. The user must have an email field. All the other fields (`id`, `name`, `username`, `image_url`) are optional.
+If you want to specify who is sending/creating the ticket, include a user. The user must have at least one of these fields: `email`, `source_specific_id`, or `id` (the Assembly ID). We will match the user to an existing Assembly customer/contact based on these fields. If no matching Assembly user exists, the user will be created. Other optional fields include `name`, `username`, `image_url`.
+If you want to match the interaction to a specific company account, please include the `company_source_specific_id` or the `company_id` (the company's Assembly ID).
 You can also pass in other optional fields like the title, original timestamp, and additional attributes.
 
 ```bash
@@ -33,7 +34,20 @@ curl -X \
  POST https://api.wavelength.cx/interactions \
  -F "title=Sample title" \
  -F "query=Sample query text" \
- -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\"}" \
+ -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\", \"source_specific_id\": \"userSSID\"}" \
+ -F "company_source_specific_id=companySSID" \
+ -F "additional_properties={\"key1\": \"value1\", \"key2\": 123, \"key3\": \"value3\"}" \
+ -F "original_timestamp=2024-06-10T18:34:00Z" \
+ -H "Authorization: <API_KEY>" \
+ -H "Content-Type: multipart/form-data"
+```
+```bash
+curl -X \
+ POST https://api.wavelength.cx/interactions \
+ -F "title=Sample title" \
+ -F "query=Sample query text" \
+ -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\", \"source_specific_id\": \"userSSID\"}" \
+ -F "company_id=01945162-52fc-739b-98de-e2ac9f2eec49" \
  -F "additional_properties={\"key1\": \"value1\", \"key2\": 123, \"key3\": \"value3\"}" \
  -F "original_timestamp=2024-06-10T18:34:00Z" \
  -H "Authorization: <API_KEY>" \
