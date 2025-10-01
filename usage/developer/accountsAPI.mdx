@@ -62,10 +62,17 @@ curl -X \
 #### Get Accounts
 You can grab all the accounts for your organization by calling `accounts`. This call is paginated, so please include the limit and offset in your URL otherwise the default `limit=100` and `offset=0` will be used.
 The return type is `{"accounts": {"data": [...], "has_next_page": ..., "next_cursor": ...}}`.
-Note: the accounts are sorted by type so all Company Accounts will show up before Customer Accounts. Within each account type section, the accounts are sorted alphabetically by account name.
+The accounts are sorted by type so all Company Accounts will show up before Customer Accounts. Within each account type section, the accounts are sorted alphabetically by account name. 
+Each account will include multiple attributes in a key-value format. The attributes include `id` (the assembly id), `name`, `domain`, `image_url`, `contract_value`, `contract_type`, `account_type`, `source_specific_ids`, and others.
 ```bash
 curl -X \
  GET "https://api.wavelength.cx/accounts?limit=50&offset=0" \
+ -H "Authorization: <API_KEY>"
+```
+If wanted, you can include a name filter which is applied to account names and domains. Name comparisons match the search bar's results on the Assembly Accounts Page. To include names with spaces, make sure that the spaces are url encoded like in this example where the name query is "test company".
+```bash
+curl -X \
+ GET "https://api.wavelength.cx/accounts?name=test%20company&limit=50&offset=0" \
  -H "Authorization: <API_KEY>"
 ```
 To grab a specific account, you can use the ID from Assembly, the domain of the account, or a source specific ID that you've already linked to the account. This call is not paginated since you are only grabbing a specific account.
