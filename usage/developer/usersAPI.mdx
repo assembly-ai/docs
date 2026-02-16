@@ -1,0 +1,95 @@
+---
+title: 'Users'
+description: 'List and look up workspace members via the external API.'
+---
+
+# Users
+
+List and look up workspace members via the external API.
+
+## Authentication
+
+All endpoints require an `Authorization` header with a valid org API key:
+
+```http
+Authorization: <your_org_api_key>
+```
+
+## Endpoints
+
+### List all users
+
+```http
+GET /users
+```
+
+Returns all users in the workspace/org associated with the API key.
+
+#### Response
+
+```json
+{
+  "users": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "email": "alice@example.com",
+      "username": "alice",
+      "first_name": "Alice",
+      "last_name": "Smith",
+      "picture_url": "https://example.com/alice.jpg",
+      "user_role": "Admin",
+      "calendar_link": "https://calendly.com/alice"
+    },
+    {
+      "id": "f0e9d8c7-b6a5-4321-fedc-ba9876543210",
+      "email": "bob@example.com",
+      "username": "bob",
+      "first_name": "Bob",
+      "last_name": "Jones",
+      "picture_url": "https://example.com/bob.jpg",
+      "user_role": "Member",
+      "calendar_link": null
+    },
+    {
+      "id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
+      "email": "carol@example.com",
+      "username": "carol",
+      "first_name": "Carol",
+      "last_name": "Lee",
+      "picture_url": "https://example.com/carol.jpg",
+      "user_role": "Owner",
+      "calendar_link": "https://calendly.com/carol"
+    }
+  ]
+}
+```
+
+### Get a single user by ID
+
+```http
+GET /users/{id}
+```
+
+Fetch a single user by their UUID. The user must belong to the workspace/org associated with the API key.
+
+#### Response
+
+```json
+{
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "email": "alice@example.com",
+    "username": "alice",
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "picture_url": "https://example.com/alice.jpg",
+    "user_role": "Admin",
+    "calendar_link": "https://calendly.com/alice"
+  }
+}
+```
+
+#### Errors
+
+- `400 Bad Request` if the user ID is invalid or not found in your workspace.
+- `401 Unauthorized` if the API key is missing or invalid.

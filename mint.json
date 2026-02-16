@@ -60,7 +60,7 @@
          "usage/shortcuts",
          {
           "group": "Developer",
-          "pages": ["usage/developer/interactionsAPI", "usage/developer/accountsAPI"]
+          "pages": ["usage/developer/interactionsAPI", "usage/developer/accountsAPI", "usage/developer/usersAPI"]
         }
       ]
     }
