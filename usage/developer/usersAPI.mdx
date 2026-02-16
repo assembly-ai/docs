@@ -67,7 +67,7 @@ Returns all users in the workspace/org associated with the API key.
 ### Get a single user by ID
 
 ```http
-GET /users/{id}
+GET /users?id=<user_id>
 ```
 
 Fetch a single user by their UUID. The user must belong to the workspace/org associated with the API key.
@@ -89,7 +89,32 @@ Fetch a single user by their UUID. The user must belong to the workspace/org ass
 }
 ```
 
+### Get a single user by email
+
+```http
+GET /users?email=<email>
+```
+
+Fetch a single user by their email address (case-insensitive). The user must belong to the workspace/org associated with the API key.
+
+#### Response
+
+```json
+{
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "email": "alice@example.com",
+    "username": "alice",
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "picture_url": "https://example.com/alice.jpg",
+    "user_role": "Admin",
+    "calendar_link": "https://calendly.com/alice"
+  }
+}
+```
+
 #### Errors
 
-- `400 Bad Request` if the user ID is invalid or not found in your workspace.
+- `400 Bad Request` if the user ID or email is invalid or not found in your workspace.
 - `401 Unauthorized` if the API key is missing or invalid.
