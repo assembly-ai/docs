@@ -1,0 +1,121 @@
+---
+title: 'Users'
+description: 'List and look up workspace members via the external API.'
+---
+
+# Users
+
+List and look up workspace members via the external API.
+
+## Authentication
+
+All endpoints require an `Authorization` header with a valid org API key:
+
+```http
+Authorization: <your_org_api_key>
+```
+
+## Endpoints
+
+### List users (paginated)
+
+```http
+GET /list-users?page=<n>&page_size=<n>
+```
+
+Returns a paginated list of users in the workspace/org associated with the API key.
+
+#### Query parameters
+
+- `page` (optional, integer, default: `0`) — Zero‑based page index.
+- `page_size` (optional, integer, default: `10`, max: `100`) — Number of users to return per page.
+
+#### Response
+
+```json
+{
+  "users": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "email": "alice@example.com",
+      "username": "alice",
+      "first_name": "Alice",
+      "last_name": "Smith",
+      "picture_url": "https://example.com/alice.jpg",
+      "user_role": "Admin",
+      "calendar_link": "https://calendly.com/alice"
+    },
+    {
+      "id": "f0e9d8c7-b6a5-4321-fedc-ba9876543210",
+      "email": "bob@example.com",
+      "username": "bob",
+      "first_name": "Bob",
+      "last_name": "Jones",
+      "picture_url": "https://example.com/bob.jpg",
+      "user_role": "Member",
+      "calendar_link": null
+    }
+  ],
+  "page": 0,
+  "page_size": 10,
+  "has_more": true
+}
+```
+
+### Get a single user by ID
+
+```http
+GET /fetch-user?id=<user_id>
+```
+
+Fetch a single user by their UUID. The user must belong to the workspace/org associated with the API key.
+
+#### Response
+
+```json
+{
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "email": "alice@example.com",
+    "username": "alice",
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "picture_url": "https://example.com/alice.jpg",
+    "user_role": "Admin",
+    "calendar_link": "https://calendly.com/alice"
+  }
+}
+```
+
+### Get a single user by email
+
+```http
+GET /fetch-user?email=<email>
+```
+
+Fetch a single user by their email address (case-insensitive). The user must belong to the workspace/org associated with the API key.
+
+#### Response
+
+```json
+{
+  "user": {
+    "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "email": "alice@example.com",
+    "username": "alice",
+    "first_name": "Alice",
+    "last_name": "Smith",
+    "picture_url": "https://example.com/alice.jpg",
+    "user_role": "Admin",
+    "calendar_link": "https://calendly.com/alice"
+  }
+}
+```
+
+#### Errors
+
+- `400 Bad Request` if:
+  - Neither `id` nor `email` is provided.
+  - Both `id` and `email` are provided.
+  - The user ID or email is not found in your workspace.
+- `401 Unauthorized` if the API key is missing or invalid.
