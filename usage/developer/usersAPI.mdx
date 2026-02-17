@@ -17,13 +17,18 @@ Authorization: <your_org_api_key>
 
 ## Endpoints
 
-### List all users
+### List users (paginated)
 
 ```http
-GET /users
+GET /list-users?page=<n>&page_size=<n>
 ```
 
-Returns all users in the workspace/org associated with the API key.
+Returns a paginated list of users in the workspace/org associated with the API key.
+
+#### Query parameters
+
+- `page` (optional, integer, default: `0`) — Zero‑based page index.
+- `page_size` (optional, integer, default: `10`, max: `100`) — Number of users to return per page.
 
 #### Response
 
@@ -49,25 +54,18 @@ Returns all users in the workspace/org associated with the API key.
       "picture_url": "https://example.com/bob.jpg",
       "user_role": "Member",
       "calendar_link": null
-    },
-    {
-      "id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
-      "email": "carol@example.com",
-      "username": "carol",
-      "first_name": "Carol",
-      "last_name": "Lee",
-      "picture_url": "https://example.com/carol.jpg",
-      "user_role": "Owner",
-      "calendar_link": "https://calendly.com/carol"
     }
-  ]
+  ],
+  "page": 0,
+  "page_size": 10,
+  "has_more": true
 }
 ```
 
 ### Get a single user by ID
 
 ```http
-GET /users?id=<user_id>
+GET /fetch-user?id=<user_id>
 ```
 
 Fetch a single user by their UUID. The user must belong to the workspace/org associated with the API key.
@@ -92,7 +90,7 @@ Fetch a single user by their UUID. The user must belong to the workspace/org ass
 ### Get a single user by email
 
 ```http
-GET /users?email=<email>
+GET /fetch-user?email=<email>
 ```
 
 Fetch a single user by their email address (case-insensitive). The user must belong to the workspace/org associated with the API key.
@@ -116,5 +114,8 @@ Fetch a single user by their email address (case-insensitive). The user must bel
 
 #### Errors
 
-- `400 Bad Request` if the user ID or email is invalid or not found in your workspace.
+- `400 Bad Request` if:
+  - Neither `id` nor `email` is provided.
+  - Both `id` and `email` are provided.
+  - The user ID or email is not found in your workspace.
 - `401 Unauthorized` if the API key is missing or invalid.
