@@ -1,0 +1,76 @@
+---
+title: 'Create Account Note'
+description: 'Create or idempotently upsert an Account Note for a company resolved by domain. Use for CRM/meeting note ingestion.'
+---
+
+Create (or idempotently upsert) an Account Note for a company resolved by **domain**. Use this endpoint for CRM/accounting note ingestion (e.g., meeting notes from Gong, Salesforce, etc.).
+
+The endpoint:
+- Resolves the **primary company** for the provided domain (`is_primary=true`) within the org
+- Stores note content and meeting metadata (including raw participant emails)
+- Performs **idempotent upsert** using `(org_id, source, source_specific_id)` — repeated calls with the same `source` and `source_specific_id` update the same record instead of creating duplicates
+
+## Endpoint
+
+**POST** `/api/v1/auth/accounts/notes`
+
+**Authentication:** API key via header `Authorization: Basic <API_KEY>` (required)
+
+## Request body (JSON)
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `domain` | string | Yes | Domain used to resolve the company (e.g. `"berkeley.edu"`). Must map to an existing **primary** company for the org. |
+| `source` | string | Yes | Source system identifier (e.g. `"gong"`, `"salesforce"`). Treated as an opaque string. |
+| `source_specific_id` | string | Yes | Unique ID for this note in the source system (used for idempotency). |
+| `note` | string | Yes | The note content/body. |
+| `original_timestamp` | string | Yes | Meeting time in RFC3339 format (e.g. `"2025-02-25T14:30:00Z"`). |
+| `participants` | array of strings | Yes | Raw participant emails (stored in meeting metadata). |
+| `title` | string | No | Optional title for the note. |
+| `summary` | string | No | Optional summary of the note. |
+| `action_items` | string | No | Optional action items extracted from the note. |
+| `transcript` | string | No | Optional full transcript. |
+
+## Response (JSON)
+
+On success, returns the created/updated note ID:
+
+```json
+{
+  "id": "uuid"
+}
+```
+
+The stored note includes `org_id`, `company_id`, `source`, `source_specific_id`, and `metadata.meeting.participant_emails` (array of strings, when provided).
+
+## Idempotency
+
+Calls with the same `(source, source_specific_id)` within an org will **update** the existing note instead of creating a duplicate. Use this to safely retry or re-sync notes from external systems.
+
+## Error cases
+
+| Status | Description |
+|--------|-------------|
+| `401 Unauthorized` | Missing or invalid `Authorization` header |
+| `400 Bad Request` | Invalid input payload (missing required fields, invalid `original_timestamp`, empty `participants`, etc.) |
+| `412 Precondition Failed` | Domain does not correspond to an existing company account for the org |
+| `502 Bad Gateway` | Upstream dependency error (e.g., Supabase/DB lookup failure) |
+
+## Example
+
+```bash
+curl -i -X POST 'https://api.wavelength.cx/accounts/notes' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Basic <API_KEY>' \
+  --data '{
+    "domain": "acmecorp.com",
+    "source": "zoom",
+    "source_specific_id": "call_84729",
+    "note": "Initial sync regarding Q3 deliverables and integration timeline.",
+    "original_timestamp": "2026-04-12T10:15:00Z",
+    "participants": [
+      "alice.smith@acmecorp.com",
+      "bob.jones@acmecorp.com"
+    ]
+  }'
+```
