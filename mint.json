@@ -73,7 +73,6 @@
           "pages": [
             "usage/developer/interactionsAPI",
             "usage/developer/accountsAPI",
-            "usage/developer/createAccountNote",
             "usage/developer/usersAPI"
           ]
         }

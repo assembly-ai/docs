@@ -129,7 +129,7 @@
         }
       }
     },
-    "/api/v1/auth/accounts/notes": {
+    "/accounts/create_note": {
       "post": {
         "summary": "Create Account Note",
         "description": "Create (or idempotently upsert) an Account Note for a company resolved by domain. Use for CRM/meeting note ingestion. Repeated calls with the same source and source_specific_id update the same record.",
