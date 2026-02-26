@@ -128,6 +128,83 @@
           }
         }
       }
+    },
+    "/api/v1/auth/accounts/notes": {
+      "post": {
+        "summary": "Create Account Note",
+        "description": "Create (or idempotently upsert) an Account Note for a company resolved by domain. Use for CRM/meeting note ingestion. Repeated calls with the same source and source_specific_id update the same record.",
+        "operationId": "createAccountNote",
+        "tags": [
+          "Accounts"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountNoteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created or updated note",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAccountNoteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input payload (missing required fields)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid Authorization header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Domain does not correspond to an existing company account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Upstream dependency error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -183,12 +260,84 @@
             "type": "string"
           }
         }
+      },
+      "CreateAccountNoteRequest": {
+        "type": "object",
+        "required": [
+          "domain",
+          "source",
+          "source_specific_id",
+          "note",
+          "original_timestamp",
+          "participants"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Domain used to resolve the company (e.g. berkeley.edu)"
+          },
+          "source": {
+            "type": "string",
+            "description": "Source system identifier (e.g. gong, salesforce)"
+          },
+          "source_specific_id": {
+            "type": "string",
+            "description": "Unique ID for this note in the source system"
+          },
+          "note": {
+            "type": "string",
+            "description": "The note content/body"
+          },
+          "original_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Meeting time (RFC3339)"
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Raw participant emails"
+          },
+          "title": {
+            "type": "string",
+            "description": "Optional title for the note"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Optional summary"
+          },
+          "action_items": {
+            "type": "string",
+            "description": "Optional action items"
+          },
+          "transcript": {
+            "type": "string",
+            "description": "Optional full transcript"
+          }
+        }
+      },
+      "CreateAccountNoteResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the created/updated note"
+          }
+        }
       }
     },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      },
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "API key via Authorization: Basic <API_KEY>"
       }
     }
   }

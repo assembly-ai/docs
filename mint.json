@@ -4,17 +4,11 @@
   "logo": {
     "dark": "/logo/White logo - no background.svg",
     "light": "logo/Black logo - no background.svg"
-
-    
-    
   },
   "modeToggle": {
     "default": "light",
     "isHidden": true
-  }
-  
-  , 
-
+  },
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#7695ff",
@@ -44,27 +38,47 @@
       "pages": [
         {
           "group": "Support Ticketing",
-          "pages": ["usage/support/issues","usage/support/statuses", "usage/support/askai", "usage/support/slas", "usage/support/alert", "usage/support/businesshours"]
+          "pages": [
+            "usage/support/issues",
+            "usage/support/statuses",
+            "usage/support/askai",
+            "usage/support/slas",
+            "usage/support/alert",
+            "usage/support/businesshours"
+          ]
         },
         {
           "group": "Platform",
-          "pages": ["usage/platform/teams", "usage/platform/labels","usage/platform/links" ,"usage/platform/workflows&rules", "usage/platform/search"]
-
-        }, 
+          "pages": [
+            "usage/platform/teams",
+            "usage/platform/labels",
+            "usage/platform/links",
+            "usage/platform/workflows&rules",
+            "usage/platform/search"
+          ]
+        },
         {
           "group": "Customer Success",
-          "pages": ["usage/customerSuccess/Overview", "usage/customerSuccess/productInsights", "usage/customerSuccess/announcements", "usage/customerSuccess/companies"]
+          "pages": [
+            "usage/customerSuccess/Overview",
+            "usage/customerSuccess/productInsights",
+            "usage/customerSuccess/announcements",
+            "usage/customerSuccess/companies"
+          ]
         },
-        
-         "usage/analytics", 
-         "usage/shortcuts",
-         {
+        "usage/analytics",
+        "usage/shortcuts",
+        {
           "group": "Developer",
-          "pages": ["usage/developer/interactionsAPI", "usage/developer/accountsAPI", "usage/developer/usersAPI"]
+          "pages": [
+            "usage/developer/interactionsAPI",
+            "usage/developer/accountsAPI",
+            "usage/developer/createAccountNote",
+            "usage/developer/usersAPI"
+          ]
         }
       ]
     }
-    
   ],
   "footerSocials": {
     "linkedin": "https://www.linkedin.com/company/askassemblyapp"
