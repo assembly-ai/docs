@@ -157,59 +157,6 @@ curl -X \
  -H "Authorization: <API_KEY>"
 ```
 
-## Account Notes
-
-Create (or idempotently upsert) Account Notes for companies resolved by **domain**. Use for CRM/meeting note ingestion (e.g., Gong, Salesforce).
-
-#### Create Account Note
-Use this endpoint for CRM/meeting note ingestion (e.g., meeting notes from Gong, Salesforce, etc.).
-
-The endpoint:
-- Resolves the **primary company** for the provided domain (`is_primary=true`) within the org
-- Stores note content and meeting metadata (including raw participant emails)
-- Performs **idempotent upsert** using `(org_id, source, source_specific_id)` — repeated calls with the same `source` and `source_specific_id` update the same record instead of creating duplicates
-
-**POST** `/accounts/create_note`
-
-**Authentication:** API key via header `Authorization: Basic <API_KEY>` (required)
-
-**Request body (JSON):**
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `domain` | string | Yes | Domain used to resolve the company (e.g. `"berkeley.edu"`). Must map to an existing **primary** company for the org. |
-| `source` | string | Yes | Source system identifier (e.g. `"gong"`, `"salesforce"`). Treated as an opaque string. |
-| `source_specific_id` | string | Yes | Unique ID for this note in the source system (used for idempotency). |
-| `note` | string | Yes | The note content/body. |
-| `original_timestamp` | string | Yes | Meeting time in RFC3339 format (e.g. `"2025-02-25T14:30:00Z"`). |
-| `participants` | array of strings | Yes | Raw participant emails (stored in meeting metadata). |
-| `title` | string | No | Optional title for the note. |
-| `action_items` | string | No | Optional action items extracted from the note. |
-| `transcript` | string | No | Optional full transcript. |
-
-**Response (JSON):** On success, returns the created/updated note ID: `{"id": "uuid"}`. The stored note includes `org_id`, `company_id`, `source`, `source_specific_id`, and `metadata.meeting.participant_emails` (array of strings, when provided).
-
-**Idempotency:** Calls with the same `(source, source_specific_id)` within an org will **update** the existing note instead of creating a duplicate.
-
-**Error cases:** `401 Unauthorized` (missing/invalid Authorization), `400 Bad Request` (invalid payload), `412 Precondition Failed` (domain does not correspond to an existing company account), `502 Bad Gateway` (upstream error).
-
-```bash
-curl -i -X POST 'https://api.wavelength.cx/accounts/create_note' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Basic <API_KEY>' \
-  --data '{
-    "domain": "acmecorp.com",
-    "source": "zoom",
-    "source_specific_id": "call_84729",
-    "note": "Initial sync regarding Q3 deliverables and integration timeline.",
-    "original_timestamp": "2026-04-12T10:15:00Z",
-    "participants": [
-      "alice.smith@acmecorp.com",
-      "bob.jones@acmecorp.com"
-    ]
-  }'
-```
-
 ## Contacts
 
 Endpoints for managing your contacts (customers who are apart of a company account). These endpoints are similar in format to the Accounts APIs. In general you can refer to a contact by appending its Assembly ID or domain to the URL. Or you can add the source specific ID of the contact as a query parameter.
@@ -598,6 +545,57 @@ Delete a usage log by its specific ID which is returned when a usage log is crea
 curl -X \
  DELETE https://api.wavelength.cx/usage/usageLogID \
  -H "Authorization: <API_KEY>"
+```
+
+## Other
+
+#### Create Account Note
+Create (or idempotently upsert) an Account Note for a company resolved by **domain**. Use this endpoint for CRM/meeting note ingestion (e.g., meeting notes from Gong, Salesforce, etc.).
+
+The endpoint:
+- Resolves the **primary company** for the provided domain (`is_primary=true`) within the org
+- Stores note content and meeting metadata (including raw participant emails)
+- Performs **idempotent upsert** using `(org_id, source, source_specific_id)` — repeated calls with the same `source` and `source_specific_id` update the same record instead of creating duplicates
+
+**POST** `/accounts/create_note`
+
+**Authentication:** API key via header `Authorization: Basic <API_KEY>` (required)
+
+**Request body (JSON):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `domain` | string | Yes | Domain used to resolve the company (e.g. `"berkeley.edu"`). Must map to an existing **primary** company for the org. |
+| `source` | string | Yes | Source system identifier (e.g. `"gong"`, `"salesforce"`). Treated as an opaque string. |
+| `source_specific_id` | string | Yes | Unique ID for this note in the source system (used for idempotency). |
+| `note` | string | Yes | The note content/body. |
+| `original_timestamp` | string | Yes | Meeting time in RFC3339 format (e.g. `"2025-02-25T14:30:00Z"`). |
+| `participants` | array of strings | Yes | Raw participant emails (stored in meeting metadata). |
+| `title` | string | No | Optional title for the note. |
+| `action_items` | string | No | Optional action items extracted from the note. |
+| `transcript` | string | No | Optional full transcript. |
+
+**Response (JSON):** On success, returns the created/updated note ID: `{"id": "uuid"}`. The stored note includes `org_id`, `company_id`, `source`, `source_specific_id`, and `metadata.meeting.participant_emails` (array of strings, when provided).
+
+**Idempotency:** Calls with the same `(source, source_specific_id)` within an org will **update** the existing note instead of creating a duplicate.
+
+**Error cases:** `401 Unauthorized` (missing/invalid Authorization), `400 Bad Request` (invalid payload), `412 Precondition Failed` (domain does not correspond to an existing company account), `502 Bad Gateway` (upstream error).
+
+```bash
+curl -i -X POST 'https://api.wavelength.cx/accounts/create_note' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Basic <API_KEY>' \
+  --data '{
+    "domain": "acmecorp.com",
+    "source": "zoom",
+    "source_specific_id": "call_84729",
+    "note": "Initial sync regarding Q3 deliverables and integration timeline.",
+    "original_timestamp": "2026-04-12T10:15:00Z",
+    "participants": [
+      "alice.smith@acmecorp.com",
+      "bob.jones@acmecorp.com"
+    ]
+  }'
 ```
 
 ## Rate Limiting
