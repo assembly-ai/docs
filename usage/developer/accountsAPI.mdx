@@ -559,7 +559,7 @@ The endpoint:
 
 **POST** `/accounts/create_note`
 
-**Authentication:** API key via header `Authorization: Basic <API_KEY>` (required)
+**Authentication:** API key via header `Authorization: <API_KEY>` (required)
 
 **Request body (JSON):**
 
@@ -582,20 +582,21 @@ The endpoint:
 **Error cases:** `401 Unauthorized` (missing/invalid Authorization), `400 Bad Request` (invalid payload), `412 Precondition Failed` (domain does not correspond to an existing company account), `502 Bad Gateway` (upstream error).
 
 ```bash
-curl -i -X POST 'https://api.wavelength.cx/accounts/create_note' \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Basic <API_KEY>' \
-  --data '{
-    "domain": "acmecorp.com",
-    "source": "zoom",
-    "source_specific_id": "call_84729",
-    "note": "Initial sync regarding Q3 deliverables and integration timeline.",
-    "original_timestamp": "2026-04-12T10:15:00Z",
-    "participants": [
-      "alice.smith@acmecorp.com",
-      "bob.jones@acmecorp.com"
-    ]
-  }'
+curl -X \
+ POST https://api.wavelength.cx/accounts/create_note \
+ -H "Content-Type: application/json" \
+ -H "Authorization: <API_KEY>" \
+ -d '{
+   "domain": "acmecorp.com",
+   "source": "zoom",
+   "source_specific_id": "call_84729",
+   "note": "Initial sync regarding Q3 deliverables and integration timeline.",
+   "original_timestamp": "2026-04-12T10:15:00Z",
+   "participants": [
+     "alice.smith@acmecorp.com",
+     "bob.jones@acmecorp.com"
+   ]
+ }'
 ```
 
 ## Rate Limiting
