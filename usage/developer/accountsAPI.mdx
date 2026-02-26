@@ -157,8 +157,12 @@ curl -X \
  -H "Authorization: <API_KEY>"
 ```
 
+## Account Notes
+
+Create (or idempotently upsert) Account Notes for companies resolved by **domain**. Use for CRM/meeting note ingestion (e.g., Gong, Salesforce).
+
 #### Create Account Note
-Create (or idempotently upsert) an Account Note for a company resolved by **domain**. Use this endpoint for CRM/accounting note ingestion (e.g., meeting notes from Gong, Salesforce, etc.).
+Use this endpoint for CRM/meeting note ingestion (e.g., meeting notes from Gong, Salesforce, etc.).
 
 The endpoint:
 - Resolves the **primary company** for the provided domain (`is_primary=true`) within the org
