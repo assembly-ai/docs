@@ -110,3 +110,156 @@ Successful responses take on the following format in JSON:
 There is a rate limit of 30 events per second. If you exceed this, you will receive a 429 response code.
 
 If you need a higher rate, please let us know.
+
+#### Create Interaction Reply
+
+## POST /interactions/reply
+
+Creates a new reply/message for an existing ticket. Supports multiple ticket identification methods and file attachments.
+
+### Query Parameters
+Exactly one of the following is required:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `id` | string | Assembly ULID of the ticket to reply to |
+| `source_specific_id` | string | Source-specific ID of the ticket to reply to |
+
+### Headers
+- `Content-Type: multipart/form-data` (required for file uploads)
+- `Authorization: Bearer <your-api-key>` (required)
+
+### Request Body (multipart/form-data)
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `content` | string | Yes | The reply message content |
+| `source_specific_id` | string | No | Unique identifier for this reply (for deduplication) |
+| `original_timestamp` | string | No | Original timestamp in RFC3339 format |
+| `user` | object | Yes | User information object |
+| `files` | file[] | No | File attachments (multipart) |
+| `files_image_url` | string | No | Comma-separated URLs of images to attach |
+
+#### User Object
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | Yes | User ID |
+| `name` | string | No | User name |
+| `email` | string | No | User email |
+| `source_specific_id` | string | No | User's source-specific ID |
+
+### Ticket Identification
+
+The endpoint requires exactly one query parameter for ticket identification:
+
+- **`id`** - Assembly ULID of the ticket
+- **`source_specific_id`** - Source-specific ID of the ticket
+
+Both parameters cannot be provided simultaneously, and at least one is required.
+
+### Example Request (with Assembly ULID)
+
+```bash
+curl -X POST "https://api.askassembly.app/interactions/reply?id=01KKXRZM9PJRKJ488ZK3PB6JPX" \
+  -H "Authorization: Bearer your-api-key" \
+  -F "content=This is my reply to the ticket" \
+  -F 'user={"id":"user123","name":"John Doe","email":"john@example.com"}' \
+  -F "source_specific_id=reply_12345"
+```
+
+### Example Request (with source_specific_id)
+
+```bash
+curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=ticket_ss_123" \
+  -H "Authorization: Bearer your-api-key" \
+  -F "content=Reply via source specific ID" \
+  -F "files=@attachment.pdf" \
+  -F 'user={"id":"user456","email":"jane@example.com"}'
+```
+
+### Example Request (with file uploads)
+
+```bash
+curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=ticket_abc123" \
+  -H "Authorization: Bearer your-api-key" \
+  -F "content=Here are the files you requested" \
+  -F "files=@document1.pdf" \
+  -F "files=@image.png" \
+  -F "files_image_url=https://example.com/image1.jpg,https://example.com/image2.jpg" \
+  -F 'user={"id":"user789","name":"Alice","email":"alice@example.com"}'
+```
+
+### Response
+
+```json
+{
+  "created_history_id": "01H8X9Z7Y2W3R4T5U6V7W8X9Y"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `created_history_id` | string | ULID of the created history record |
+
+### Error Responses
+
+#### 400 Bad Request
+```json
+{
+  "error": "content is required"
+}
+```
+
+```json
+{
+  "error": "user is required"
+}
+```
+
+```json
+{
+  "error": "user.id is required"
+}
+```
+
+```json
+{
+  "error": "exactly one of id or source_specific_id must be provided"
+}
+```
+
+```json
+{
+  "error": "invalid ULID format for id parameter"
+}
+```
+
+#### 404 Not Found
+```json
+{
+  "error": "ticket not found for identifier: ticket_abc123"
+}
+```
+
+#### 409 Conflict (Duplicate)
+```json
+{
+  "error": "source specific id already exists"
+}
+```
+
+#### 413 Payload Too Large
+```json
+{
+  "error": "File size exceeds 32MB"
+}
+```
+
+### Important Notes
+
+- **File Size Limit**: 32MB per file
+- **Supported File Types**: Any file type can be uploaded
+- **Deduplication**: Duplicate `source_specific_id` values are rejected for Slack/Community Slack sources
+- **User Requirement**: User object with `user.id` is now mandatory (no anonymous users)
+- **Query Parameter Exclusivity**: Exactly one of `id` or `source_specific_id` must be provided, not both
+- **Rate Limiting**: Subject to rate limiting (60 requests per minute per API key/IP)
