@@ -41,7 +41,7 @@ curl -X \
  -F "title=Sample title" \
  -F "query=Sample query text" \
  -F "source_specific_id=my_ticket_123" \
- -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\"}" \
+ -F "user={\"email\": \"user@example.com\", \"name\": \"John Doe\"}" \
  -F "original_timestamp=2024-06-10T18:34:00Z" \
  -H "Authorization: <API_KEY>" \
  -H "Content-Type: multipart/form-data"
@@ -53,7 +53,7 @@ You can then reply to this ticket using the `source_specific_id`:
 curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=my_ticket_123" \
   -H "Authorization: <API_KEY>" \
   -F "content=This is a reply to the ticket" \
-  -F 'user={"id":"agent123","name":"Support Agent"}'
+  -F 'user={"email":"agent@example.com","name":"Support Agent"}'
 ```
 
 #### Full Example with All Fields
@@ -64,7 +64,7 @@ curl -X \
  -F "title=Sample title" \
  -F "query=Sample query text" \
  -F "source_specific_id=unique_ticket_id" \
- -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\", \"source_specific_id\": \"userSSID\"}" \
+ -F "user={\"email\": \"user@example.com\", \"name\": \"John Doe\", \"source_specific_id\": \"userSSID\"}" \
  -F "company_source_specific_id=companySSID" \
  -F "additional_properties={\"key1\": \"value1\", \"key2\": 123, \"key3\": \"value3\"}" \
  -F "original_timestamp=2024-06-10T18:34:00Z" \
@@ -76,7 +76,7 @@ curl -X \
  POST https://api.wavelength.cx/interactions \
  -F "title=Sample title" \
  -F "query=Sample query text" \
- -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\", \"source_specific_id\": \"userSSID\"}" \
+ -F "user={\"email\": \"user@example.com\", \"name\": \"John Doe\"}" \
  -F "company_id=01945162-52fc-739b-98de-e2ac9f2eec49" \
  -F "additional_properties={\"key1\": \"value1\", \"key2\": 123, \"key3\": \"value3\"}" \
  -F "original_timestamp=2024-06-10T18:34:00Z" \
@@ -173,10 +173,12 @@ Exactly one of the following is required:
 #### User Object
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | string | Yes | User ID |
+| `id` | string | No* | User ID |
 | `name` | string | No | User name |
-| `email` | string | No | User email |
+| `email` | string | No* | User email |
 | `source_specific_id` | string | No | User's source-specific ID |
+
+*At least one of `id` or `email` is required. If only `email` is provided, it will be used as the user identifier.
 
 ### Ticket Identification
 
@@ -193,7 +195,7 @@ Both parameters cannot be provided simultaneously, and at least one is required.
 curl -X POST "https://api.askassembly.app/interactions/reply?id=01KKXRZM9PJRKJ488ZK3PB6JPX" \
   -H "Authorization: Bearer your-api-key" \
   -F "content=This is my reply to the ticket" \
-  -F 'user={"id":"user123","name":"John Doe","email":"john@example.com"}' \
+  -F 'user={"name":"John Doe","email":"john@example.com"}' \
   -F "source_specific_id=reply_12345"
 ```
 
@@ -204,7 +206,7 @@ curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=
   -H "Authorization: Bearer your-api-key" \
   -F "content=Reply via source specific ID" \
   -F "files=@attachment.pdf" \
-  -F 'user={"id":"user456","email":"jane@example.com"}'
+  -F 'user={"name":"Jane Doe","email":"jane@example.com"}'
 ```
 
 ### Example Request (with file uploads)
@@ -216,7 +218,7 @@ curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=
   -F "files=@document1.pdf" \
   -F "files=@image.png" \
   -F "files_image_url=https://example.com/image1.jpg,https://example.com/image2.jpg" \
-  -F 'user={"id":"user789","name":"Alice","email":"alice@example.com"}'
+  -F 'user={"name":"Alice","email":"alice@example.com"}'
 ```
 
 ### Response
@@ -248,7 +250,7 @@ curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=
 
 ```json
 {
-  "error": "user.id is required"
+  "error": "user.id or user.email is required"
 }
 ```
 
