@@ -29,11 +29,41 @@ If you want to specify who is sending/creating the ticket, include a user. The u
 If you want to match the interaction to a specific company account, please include the `company_source_specific_id` or the `company_id` (the company's Assembly ID).
 You can also pass in other optional fields like the title, original timestamp, and additional attributes.
 
+#### Source Specific ID
+
+You can include a `source_specific_id` to give the ticket a unique identifier. This is useful for:
+- **Deduplication**: Prevent duplicate tickets from being created
+- **Replying**: Use this ID later to add replies to the ticket via the `/interactions/reply` endpoint
+
 ```bash
 curl -X \
  POST https://api.wavelength.cx/interactions \
  -F "title=Sample title" \
  -F "query=Sample query text" \
+ -F "source_specific_id=my_ticket_123" \
+ -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\"}" \
+ -F "original_timestamp=2024-06-10T18:34:00Z" \
+ -H "Authorization: <API_KEY>" \
+ -H "Content-Type: multipart/form-data"
+```
+
+You can then reply to this ticket using the `source_specific_id`:
+
+```bash
+curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=my_ticket_123" \
+  -H "Authorization: <API_KEY>" \
+  -F "content=This is a reply to the ticket" \
+  -F 'user={"id":"agent123","name":"Support Agent"}'
+```
+
+#### Full Example with All Fields
+
+```bash
+curl -X \
+ POST https://api.wavelength.cx/interactions \
+ -F "title=Sample title" \
+ -F "query=Sample query text" \
+ -F "source_specific_id=unique_ticket_id" \
  -F "user={\"id\": \"userID\", \"email\": \"userEmail@gmail.com\", \"source_specific_id\": \"userSSID\"}" \
  -F "company_source_specific_id=companySSID" \
  -F "additional_properties={\"key1\": \"value1\", \"key2\": 123, \"key3\": \"value3\"}" \
