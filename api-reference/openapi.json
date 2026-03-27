@@ -122,7 +122,7 @@
             }
           },
           "400": {
-            "description": "Invalid request body, missing required fields, invalid UUID, or pagination limits out of bounds",
+            "description": "Invalid request body, missing required fields, or pagination limits out of bounds",
             "content": {
               "application/json": {
                 "schema": {
@@ -344,12 +344,11 @@
       },
       "AdditionalPropertyFilter": {
         "type": "object",
-        "required": ["id", "value"],
+        "required": ["name", "value"],
         "properties": {
-          "id": {
+          "name": {
             "type": "string",
-            "format": "uuid",
-            "description": "Attribute UUID"
+            "description": "Attribute name"
           },
           "value": {
             "type": "string",
