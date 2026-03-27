@@ -101,7 +101,7 @@ Search and filter accounts by additional properties, name, or domain with pagina
 {
   "additional_properties": [
     {
-      "id": "string (UUID)",
+      "name": "string",
       "value": "string"
     }
   ],
@@ -113,8 +113,8 @@ Search and filter accounts by additional properties, name, or domain with pagina
 ```
 
 **Field Descriptions:**
-- **additional_properties** (optional, array): Filter by attribute ID and exact value match
-  - **id** (required if additional_properties provided): Attribute UUID
+- **additional_properties** (optional, array): Filter by attribute name and exact value match
+  - **name** (required if additional_properties provided): Attribute name
   - **value** (required if additional_properties provided): Exact value to match
 - **name** (optional): Filter by account name (case-insensitive partial match)
 - **domain** (optional): Filter by account domain (case-insensitive partial match)
@@ -150,8 +150,8 @@ curl -X POST "https://api.wavelength.cx/accounts/search" \
   -H "Content-Type: application/json" \
   -d '{
     "additional_properties": [{
-      "id": "01945162-52fc-739b-98de-e2ac9f2eec49",
-      "value": "Enterprise"
+      "name": "Account Name",
+      "value": "Sample Company"
     }],
     "limit": 50,
     "offset": 0
@@ -164,8 +164,8 @@ curl -X POST "https://api.wavelength.cx/accounts/search" \
   -d '{
     "name": "Acme",
     "additional_properties": [{
-      "id": "01945162-52fc-739b-98de-e2ac9f2eec49", 
-      "value": "Enterprise"
+      "name": "Account Name", 
+      "value": "Sample Company"
     }],
     "limit": 50,
     "offset": 0
@@ -173,12 +173,12 @@ curl -X POST "https://api.wavelength.cx/accounts/search" \
 ```
 
 **Error Responses:**
-- **400 Bad Request**: Invalid request body, missing required fields, invalid UUID, or pagination limits out of bounds
+- **400 Bad Request**: Invalid request body, missing required fields, or pagination limits out of bounds
 - **401 Unauthorized**: Invalid or missing API key
 - **500 Internal Server Error**: Database or server errors
 
 **Important Notes:**
-1. If `additional_properties` is provided, both `id` and `value` must be present for each filter
+1. If `additional_properties` is provided, both `name` and `value` must be present for each filter
 2. Multiple `additional_properties` filters are combined with AND logic
 3. `name` and `domain` filters use case-insensitive partial matching
 4. Pagination follows the same pattern as GET /accounts endpoint
