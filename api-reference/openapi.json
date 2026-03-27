@@ -96,6 +96,64 @@
         }
       }
     },
+    "/accounts/search": {
+      "post": {
+        "description": "Search and filter accounts by additional properties, name, or domain with pagination support",
+        "requestBody": {
+          "description": "Search criteria for accounts",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body, missing required fields, invalid UUID, or pagination limits out of bounds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Database or server errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/plants/{id}": {
       "delete": {
         "description": "Deletes a single plant based on the ID supplied",
@@ -248,6 +306,115 @@
             "type": "string",
             "format": "uuid",
             "description": "UUID of the created/updated note"
+          }
+        }
+      },
+      "AccountSearchRequest": {
+        "type": "object",
+        "properties": {
+          "additional_properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalPropertyFilter"
+            },
+            "description": "Filter by attribute ID and exact value match"
+          },
+          "name": {
+            "type": "string",
+            "description": "Filter by account name (case-insensitive partial match)"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Filter by account domain (case-insensitive partial match)"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 50,
+            "description": "Number of results per page"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0,
+            "description": "Number of results to skip"
+          }
+        }
+      },
+      "AdditionalPropertyFilter": {
+        "type": "object",
+        "required": ["id", "value"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Attribute UUID"
+          },
+          "value": {
+            "type": "string",
+            "description": "Exact value to match"
+          }
+        }
+      },
+      "AccountSearchResponse": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "$ref": "#/components/schemas/AccountSearchData"
+          }
+        }
+      },
+      "AccountSearchData": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountSearchItem"
+            }
+          },
+          "has_next_page": {
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "type": "integer"
+          }
+        }
+      },
+      "AccountSearchItem": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/SearchAccount"
+          }
+        }
+      },
+      "SearchAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Account UUID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Account name"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Account domain"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["Company", "Customer"],
+            "description": "Account type"
+          },
+          "attributes_cached": {
+            "type": "array",
+            "items": {},
+            "description": "Cached account attributes"
           }
         }
       }
