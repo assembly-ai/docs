@@ -154,6 +154,254 @@
         }
       }
     },
+    "/accounts/notes": {
+      "get": {
+        "description": "Retrieve all account notes for the organization with pagination support",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of notes to return",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of notes to skip for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of account notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountNotesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/notes/{account_id}": {
+      "get": {
+        "description": "Retrieve notes for a specific account with pagination support",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the account (company or customer)",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of notes to return",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of notes to skip for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "source_specific_id",
+            "in": "query",
+            "description": "Alternative account identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of account notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountNotesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid account ID or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{id}": {
+      "put": {
+        "description": "Enhanced to support contract value and type updates for two-way sync capability",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "UUID of the account",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Account update fields including contract information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Account updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid account ID or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/plants/{id}": {
       "delete": {
         "description": "Deletes a single plant based on the ID supplied",
@@ -414,6 +662,115 @@
             "type": "array",
             "items": {},
             "description": "Cached account attributes"
+          }
+        }
+      },
+      "AccountNotesResponse": {
+        "type": "object",
+        "properties": {
+          "notes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountNote"
+            },
+            "description": "Array of account notes"
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether there are more pages of results"
+          },
+          "next_cursor": {
+            "type": "integer",
+            "description": "Cursor for the next page of results"
+          },
+          "total_count": {
+            "type": "integer",
+            "description": "Total number of notes matching the query"
+          }
+        }
+      },
+      "AccountNote": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the note"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the note was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the note was last updated"
+          },
+          "org_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Organization ID"
+          },
+          "customer_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Customer ID if applicable"
+          },
+          "company_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Company ID if applicable"
+          },
+          "source": {
+            "type": "string",
+            "description": "Source system identifier (e.g., gong, salesforce)"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the note"
+          },
+          "note": {
+            "type": "string",
+            "description": "Content/body of the note"
+          },
+          "original_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Original timestamp from source system"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Additional metadata about the note"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the note is enabled"
+          }
+        }
+      },
+      "UpdateAccountRequest": {
+        "type": "object",
+        "properties": {
+          "contract_value": {
+            "type": "number",
+            "format": "float",
+            "description": "Contract value in numeric format"
+          },
+          "contract_type": {
+            "type": "string",
+            "enum": ["Month", "Year"],
+            "description": "Contract type, must be 'Month' or 'Year'"
+          }
+        }
+      },
+      "UpdateAccountResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "UUID of the updated account"
           }
         }
       }
