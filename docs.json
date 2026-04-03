@@ -1,0 +1,88 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Assembly",
+  "colors": {
+    "primary": "#7695ff",
+    "light": "#7695ff",
+    "dark": "#7695ff"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "introduction",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Assembly 101",
+        "pages": [
+          {
+            "group": "Support Ticketing",
+            "pages": [
+              "usage/support/issues",
+              "usage/support/statuses",
+              "usage/support/askai",
+              "usage/support/slas",
+              "usage/support/alert",
+              "usage/support/businesshours"
+            ]
+          },
+          {
+            "group": "Platform",
+            "pages": [
+              "usage/platform/teams",
+              "usage/platform/labels",
+              "usage/platform/links",
+              "usage/platform/workflows&rules",
+              "usage/platform/search"
+            ]
+          },
+          {
+            "group": "Customer Success",
+            "pages": [
+              "usage/customerSuccess/Overview",
+              "usage/customerSuccess/productInsights",
+              "usage/customerSuccess/announcements",
+              "usage/customerSuccess/companies"
+            ]
+          },
+          "usage/analytics",
+          "usage/shortcuts",
+          {
+            "group": "Developer",
+            "pages": [
+              "usage/developer/interactionsAPI",
+              "usage/developer/accountsAPI",
+              "usage/developer/usersAPI"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "logo/Black logo - no background.svg",
+    "dark": "/logo/White logo - no background.svg"
+  },
+  "appearance": {
+    "default": "light",
+    "strict": true
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@askassembly.app"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/askassemblyapp"
+    }
+  }
+}
