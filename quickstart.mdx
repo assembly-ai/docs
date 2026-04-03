@@ -17,7 +17,15 @@ Assembly connects to the tools you already use, bringing all your customer conte
 Connect your team communication tools to capture customer conversations, bugs, feature requests, and support threads.
 
 <AccordionGroup>
-  <Accordion icon="slack" title="Slack">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/slack.svg"
+      />
+    }
+    title="Slack"
+  >
     **Stay in sync with all customer bugs/issues, or feature request threads.**
     
     Click on the Slack integration and hit the <b>enable</b> button. After you have enabled the integration, select the <b>customer channels</b> or <b>community channels</b> sections and add the channels you'd like to collect support tickets or feedback from.
@@ -46,13 +54,29 @@ Quick create Linear, Jira, or other external tickets directly from Slack by clic
 />
   </Accordion>
 
-  <Accordion icon="slack" title="Community Slack">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/slack.svg"
+      />
+    }
+    title="Community Slack"
+  >
     **Stay in sync with all your community's bugs/issues, or feature request threads.**
     
     Connect a separate Slack workspace for your community. Works the same way as the customer Slack integration but designed for community-facing workspaces where you collect feedback from users and developers.
   </Accordion>
 
-  <Accordion icon="discord" title="Discord">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/discord.svg"
+      />
+    }
+    title="Discord"
+  >
     **Stay up to date and interact with feature requests, bugs, and issues from your Discord community.**
     
     On the Manage Integrations page, click on the Discord integration and hit the "enable" button. Follow the sign-in instructions to link Discord to Assembly.
@@ -86,7 +110,15 @@ If your company email is not connected to your or your teams' Discord accounts, 
 />
   </Accordion>
 
-  <Accordion icon={<Icon icon="envelope" />} title="Gmail">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/gmail.svg"
+      />
+    }
+    title="Gmail"
+  >
     **Sync Gmail requests into Assembly. You can add multiple Gmail accounts.**
     
     To connect a support email, hit the enable button and follow the sign-in instructions. 
@@ -100,7 +132,15 @@ In order to link a forwardable account or Google Group, create a group with an a
 />
   </Accordion>
 
-  <Accordion icon="microsoft" title="Microsoft Teams">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/teams.svg"
+      />
+    }
+    title="Microsoft Teams"
+  >
    Coming soon...
   </Accordion>
 
@@ -131,7 +171,7 @@ Integrate with your help desk and support platforms to sync tickets bi-direction
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Zendesk_Logo.png"
+        src="integrations/zendesk.svg"
       />
     }
     title="Zendesk"
@@ -149,7 +189,7 @@ Integrate with your help desk and support platforms to sync tickets bi-direction
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Intercom_Logo.png"
+        src="integrations/intercom.svg"
       />
     }
     title="Intercom"
@@ -175,7 +215,7 @@ Connect your issue tracking and project management tools to auto-generate ticket
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Jira_Logo.png"
+        src="integrations/jira.svg"
       />
     }
     title="Jira"
@@ -194,7 +234,7 @@ Connect your issue tracking and project management tools to auto-generate ticket
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Linear_Logo.png"
+        src="integrations/linear.svg"
       />
     }
     title="Linear"
@@ -250,7 +290,7 @@ Connect your CRM systems to enrich customer context with account data, contacts,
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Salesforce_Logo.png"
+        src="integrations/salesforce.svg"
       />
     }
     title="Salesforce"
@@ -293,7 +333,7 @@ Connect your CRM systems to enrich customer context with account data, contacts,
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/HubSpot_Logo.png"
+        src="integrations/hubspot.svg"
       />
     }
     title="HubSpot"
@@ -320,7 +360,7 @@ Connect your product analytics and business intelligence tools to understand cus
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/PostHog_Logo.png"
+        src="integrations/posthog.svg"
       />
     }
     title="PostHog"
@@ -338,7 +378,7 @@ Connect your product analytics and business intelligence tools to understand cus
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Pendo_Logo.png"
+        src="integrations/pendo.svg"
       />
     }
     title="Pendo"
@@ -356,7 +396,7 @@ Connect your product analytics and business intelligence tools to understand cus
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Stripe_Logo.png"
+        src="integrations/stripe.svg"
       />
     }
     title="Stripe"
@@ -375,7 +415,7 @@ Connect your product analytics and business intelligence tools to understand cus
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Looker_Logo.png"
+        src="integrations/looker.svg"
       />
     }
     title="Looker"
@@ -389,15 +429,7 @@ Connect your product analytics and business intelligence tools to understand cus
     - Configure which dashboards are visible per account
   </Accordion>
 
-  <Accordion
-    icon={
-      <img
-        style={{ height: '1.25rem' }}
-        src="images/BigQuery_Logo.png"
-      />
-    }
-    title="BigQuery"
-  >
+  <Accordion icon="database" title="BigQuery">
     **Connect BigQuery to enable data warehouse analytics in Wavelength.**
     
     Integrate your BigQuery data warehouse to access custom analytics, usage metrics, and business data directly within Wavelength.
@@ -411,7 +443,7 @@ Connect your product analytics and business intelligence tools to understand cus
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Fathom_Logo.png"
+        src="integrations/fathom.svg"
       />
     }
     title="Fathom Analytics"
@@ -433,7 +465,7 @@ Connect AI meeting assistants to automatically transcribe, analyze, and sync mee
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Gong_Logo.png"
+        src="integrations/gong.svg"
       />
     }
     title="Gong"
@@ -452,7 +484,7 @@ Connect AI meeting assistants to automatically transcribe, analyze, and sync mee
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Fireflies_Logo.png"
+        src="integrations/fireflies.svg"
       />
     }
     title="Fireflies"
@@ -471,7 +503,7 @@ Connect AI meeting assistants to automatically transcribe, analyze, and sync mee
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Attention_Logo.png"
+        src="integrations/attention.svg"
       />
     }
     title="Attention"
@@ -493,7 +525,7 @@ Connect your documentation and knowledge management tools to enable AI-powered s
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Confluence_Logo.png"
+        src="integrations/confluence.svg"
       />
     }
     title="Confluence"
@@ -511,7 +543,7 @@ Connect your documentation and knowledge management tools to enable AI-powered s
     icon={
       <img
         style={{ height: '1.25rem' }}
-        src="images/Notion_Logo.png"
+        src="integrations/notion.svg"
       />
     }
     title="Notion"
@@ -525,7 +557,15 @@ Connect your documentation and knowledge management tools to enable AI-powered s
     - Use Notion content for AI-assisted responses
   </Accordion>
 
-  <Accordion icon="globe" title="Web / URL Scraping">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/web.svg"
+      />
+    }
+    title="Web / URL Scraping"
+  >
     **Automatically search through and answer questions about your web docs.**
     
     Add URLs to your public documentation, help center, or marketing site. Assembly will index the content and enable AI-powered search and question answering.
@@ -553,7 +593,15 @@ Connect your code repositories to enable AI-powered code search and understandin
     - AI understands your codebase context
   </Accordion>
 
-  <Accordion icon="github" title="GitHub Pull Requests">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/pr.svg"
+      />
+    }
+    title="GitHub Pull Requests"
+  >
     **Ingest and search through existing GitHub PRs directly within Assembly.**
     
     Connect your GitHub repositories to index pull requests. Search through PR descriptions, code changes, and discussions to understand what's been shipped and when.
@@ -571,7 +619,15 @@ Connect your code repositories to enable AI-powered code search and understandin
 Connect your calendar tools to see meeting context alongside customer data.
 
 <AccordionGroup>
-  <Accordion icon="calendar" title="Google Calendar">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/googlecalendar.svg"
+      />
+    }
+    title="Google Calendar"
+  >
     **Connect your Google Calendar accounts to see your events in Assembly. You can add multiple calendar accounts.**
     
     Sync your Google Calendar to see upcoming and past meetings with customers. Link calendar events to customer accounts for complete meeting history.
@@ -589,7 +645,15 @@ Connect your calendar tools to see meeting context alongside customer data.
 Connect spreadsheet and data tools to import customer data.
 
 <AccordionGroup>
-  <Accordion icon="table" title="Google Sheets">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/googlesheet.svg"
+      />
+    }
+    title="Google Sheets"
+  >
     **Connect your Google Sheet account to see customer data in Assembly.**
     
     Import data from Google Sheets to populate customer accounts or enrich existing data. Useful for importing customer lists, CSVs, or maintaining manual data alongside automated syncs.
@@ -607,7 +671,15 @@ Connect spreadsheet and data tools to import customer data.
 Build custom integrations using the Assembly API.
 
 <AccordionGroup>
-  <Accordion icon="code" title="API Keys">
+  <Accordion
+    icon={
+      <img
+        style={{ height: '1.25rem' }}
+        src="integrations/api.svg"
+      />
+    }
+    title="API Keys"
+  >
     **Generate API keys to build custom integrations with Assembly.**
     
     Access the API key management page to generate and manage API keys for programmatic access to Assembly. Build custom integrations, sync data from proprietary systems, or automate workflows.
