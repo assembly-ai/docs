@@ -50,7 +50,7 @@ curl -X \
 You can then reply to this ticket using the `source_specific_id`:
 
 ```bash
-curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=my_ticket_123" \
+curl -X POST "https://api.wavelength.cx/interactions/reply?source_specific_id=my_ticket_123" \
   -H "Authorization: <API_KEY>" \
   -F "content=This is a reply to the ticket" \
   -F 'user={"email":"agent@example.com","name":"Support Agent"}'
@@ -192,7 +192,7 @@ Both parameters cannot be provided simultaneously, and at least one is required.
 ### Example Request (with Assembly ULID)
 
 ```bash
-curl -X POST "https://api.askassembly.app/interactions/reply?id=01KKXRZM9PJRKJ488ZK3PB6JPX" \
+curl -X POST "https://api.wavelength.cx/interactions/reply?id=01KKXRZM9PJRKJ488ZK3PB6JPX" \
   -H "Authorization: Bearer your-api-key" \
   -F "content=This is my reply to the ticket" \
   -F 'user={"name":"John Doe","email":"john@example.com"}' \
@@ -202,7 +202,7 @@ curl -X POST "https://api.askassembly.app/interactions/reply?id=01KKXRZM9PJRKJ48
 ### Example Request (with source_specific_id)
 
 ```bash
-curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=ticket_ss_123" \
+curl -X POST "https://api.wavelength.cx/interactions/reply?source_specific_id=ticket_ss_123" \
   -H "Authorization: Bearer your-api-key" \
   -F "content=Reply via source specific ID" \
   -F "files=@attachment.pdf" \
@@ -212,7 +212,7 @@ curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=
 ### Example Request (with file uploads)
 
 ```bash
-curl -X POST "https://api.askassembly.app/interactions/reply?source_specific_id=ticket_abc123" \
+curl -X POST "https://api.wavelength.cx/interactions/reply?source_specific_id=ticket_abc123" \
   -H "Authorization: Bearer your-api-key" \
   -F "content=Here are the files you requested" \
   -F "files=@document1.pdf" \
