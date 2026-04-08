@@ -13,6 +13,8 @@ When creating a new API key, the name must be unique in your organization. Once 
 
 If you lose your API key, you will need to make a new one.
 
+For these endpoints, set the `Authorization` header to your API key value directly (for example `Authorization: <API_KEY>`). Do **not** add a `Bearer` prefix; the full header value is validated as the key.
+
 #### Sending Events
 
 Here is the API endpoint for sending events to Assembly. The only required field is <b>query</b>:
@@ -157,7 +159,7 @@ Exactly one of the following is required:
 
 ### Headers
 - `Content-Type: multipart/form-data` (required for file uploads)
-- `Authorization: Bearer <your-api-key>` (required)
+- `Authorization: <API_KEY>` (required; raw key, no `Bearer` prefix)
 
 ### Request Body (multipart/form-data)
 
@@ -193,7 +195,7 @@ Both parameters cannot be provided simultaneously, and at least one is required.
 
 ```bash
 curl -X POST "https://api.wavelength.cx/interactions/reply?id=01KKXRZM9PJRKJ488ZK3PB6JPX" \
-  -H "Authorization: Bearer your-api-key" \
+  -H "Authorization: <API_KEY>" \
   -F "content=This is my reply to the ticket" \
   -F 'user={"name":"John Doe","email":"john@example.com"}' \
   -F "source_specific_id=reply_12345"
@@ -203,7 +205,7 @@ curl -X POST "https://api.wavelength.cx/interactions/reply?id=01KKXRZM9PJRKJ488Z
 
 ```bash
 curl -X POST "https://api.wavelength.cx/interactions/reply?source_specific_id=ticket_ss_123" \
-  -H "Authorization: Bearer your-api-key" \
+  -H "Authorization: <API_KEY>" \
   -F "content=Reply via source specific ID" \
   -F "files=@attachment.pdf" \
   -F 'user={"name":"Jane Doe","email":"jane@example.com"}'
@@ -213,7 +215,7 @@ curl -X POST "https://api.wavelength.cx/interactions/reply?source_specific_id=ti
 
 ```bash
 curl -X POST "https://api.wavelength.cx/interactions/reply?source_specific_id=ticket_abc123" \
-  -H "Authorization: Bearer your-api-key" \
+  -H "Authorization: <API_KEY>" \
   -F "content=Here are the files you requested" \
   -F "files=@document1.pdf" \
   -F "files=@image.png" \
